@@ -13,11 +13,12 @@ using WebApi.Repository;
 using WebApi.Repository.Implementattions;
 using WebApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
-using Evolve.Migration;
 using WebApi.Repository.Generic;
 using Microsoft.Net.Http.Headers;
 using Tapioca.HATEOAS;
 using WebApi.HyperMedia;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace WebApi
 {
@@ -37,9 +38,61 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+			//Connection to database
             var strconn = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<MySQLContext>(options => options.UseMySql(strconn));
 
+            //Adding Migrations Support
+            ExecuteMigrations(strconn);
+
+            //Content negociation - Support to XML and JSON
+            services.AddMvc(options =>
+            {
+                //options.RespectBrowserAcceptHeader = true;
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
+            })
+            .AddXmlSerializerFormatters();
+
+            //HATEOAS filter definitions
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ObjectContentResponseEnricherList.Add(new ActorEnricher());
+            filterOptions.ObjectContentResponseEnricherList.Add(new DirectorEnricher());
+            filterOptions.ObjectContentResponseEnricherList.Add(new GenreEnricher());
+
+            //Service inject
+            services.AddSingleton(filterOptions);
+
+            //Versioning
+            services.AddApiVersioning(option => option.ReportApiVersions = true);
+
+            //Add Swagger Service
+            services.AddSwaggerGen( c =>
+            {
+                c.SwaggerDoc("v1",
+                    new Info
+                    {
+                        Title = "Movie Collection",
+                        Version = "v1"
+                    });
+            });
+            //Dependency Injection
+            services.AddScoped<IActorBusiness, ActorBusinessImpl>();
+            services.AddScoped<IGenreBusiness, GenreBusinessImpl>();
+            services.AddScoped<IDirectorBusiness, DirectorBusinessImpl>();
+
+			//Dependency Injection of GenericRepository
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IRepositoryInter<>), typeof(GenericRepositoryInter<>));
+
+            services.AddScoped(typeof(IViewRepository<>), typeof(ViewRepositoryImpl<>));
+
+            services.AddScoped<IMovieBusiness, MovieBusinessImpl>();
+            services.AddScoped<IMovieRepository, MovieRepositoryImpl>();
+        }
+
+        private void ExecuteMigrations(string strconn)
+        {
             if (_environment.IsDevelopment())
             {
                 try
@@ -60,40 +113,6 @@ namespace WebApi
                     throw;
                 }
             }
-
-
-            //services.AddMvc();
-
-            services.AddMvc(options =>
-            {
-                options.RespectBrowserAcceptHeader = true;
-                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
-                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
-
-            })
-            .AddXmlSerializerFormatters();
-
-            //Define as opções do filtro HATEOAS
-            var filterOptions = new HyperMediaFilterOptions();
-            filterOptions.ObjectContentResponseEnricherList.Add(new GenreEnricher());
-
-            //Injeta o serviço
-            services.AddSingleton(filterOptions);
-
-            services.AddApiVersioning(option => option.ReportApiVersions = true);
-
-            //Dependency Injection
-            services.AddScoped<IActorBusiness, ActorBusinessImpl>();
-            services.AddScoped<IGenreBusiness, GenreBusinessImpl>();
-            services.AddScoped<IDirectorBusiness, DirectorBusinessImpl>();
-
-            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddScoped(typeof(IRepositoryInter<>), typeof(GenericRepositoryInter<>));
-
-            services.AddScoped(typeof(IViewRepository<>), typeof(ViewRepositoryImpl<>));
-
-            services.AddScoped<IMovieBusiness, MovieBusinessImpl>();
-            services.AddScoped<IMovieRepository, MovieRepositoryImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,7 +121,22 @@ namespace WebApi
             loggerFactory.AddConsole(_configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc(routes => {
+            //Enable Swagger
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
+            });
+
+            //Starting our API in Swagger page
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
+            //Adding map routing
+            app.UseMvc(routes =>
+			{
                 routes.MapRoute(
                     name: "DefaultApi",
                     template: "{controller=Values}/{id?}");

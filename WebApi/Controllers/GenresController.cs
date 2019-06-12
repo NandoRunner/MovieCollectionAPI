@@ -1,98 +1,130 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Tapioca.HATEOAS;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Business;
 using WebApi.Data.VO;
+using System.Collections.Generic;
 using WebApi.Model;
 
 namespace WebApi.Controllers
 {
-
-    /* Mapeia as requisições de http://localhost:{porta}/api/genre/
-    Por padrão o ASP.NET Core mapeia todas as classes que extendem Controller
-    pegando a primeira parte do nome da classe em lower case [Genre]Controller
-    e expõe como endpoint REST
-    */
     [ApiVersion("1")]
     [Route("[controller]/v{version:apiVersion}")]
     public class GenresController : Controller
     {
         //Declaração do serviço usado
-        private IGenreBusiness _genreService;
+        private IGenreBusiness _business;
 
         /* Injeção de uma instancia de IGenreService ao criar
         uma instancia de GenreController */
-        public GenresController(IGenreBusiness genreService)
+        public GenresController(IGenreBusiness itemBusiness)
         {
-            _genreService = genreService;
+            _business = itemBusiness;
         }
 
-        //Mapeia as requisições GET para http://localhost:{porta}/api/genre/
         //Get sem parâmetros para o FindAll --> Busca Todos
         [HttpGet]
+        [ProducesResponseType(typeof(List<GenreVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
-            return Ok(_genreService.FindAll());
+            return new OkObjectResult(_business.FindAll());
         }
 
-        //Mapeia as requisições GET para http://localhost:{porta}/api/genre/{id}
-        //recebendo um ID como no Path da requisição
-        //Get com parâmetros para o FindById --> Busca Por ID
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(GenreVO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
-            var genre = _genreService.FindById(id);
-            if (genre == null) return NotFound();
-            return Ok(genre);
+            var item = _business.FindById(id);
+            if (item == null) return NotFound();
+            return new OkObjectResult(item);
         }
 
         [Route("[action]/{name}")]
         [HttpGet]
+        [ProducesResponseType(typeof(List<GenreVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetByName(string name)
         {
-            var ret = _genreService.FindByName(name);
+            var ret = _business.FindByName(name);
             if (ret == null) return NotFound();
             return Ok(ret);
         }
 
+        [Route("[action]/{name}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(GenreVO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetByExactName(string name)
+        {
+            var ret = _business.FindByExactName(name);
+            if (ret == null) return NotFound();
+            return Ok(ret);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(GenreVO), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Post([FromBody]GenreVO item)
+        {
+            if (item == null) return BadRequest();
+            var createdItem = _business.Create(item);
+            if (createdItem == null) return BadRequest();
+            return new OkObjectResult(createdItem);
+        }
+
+
+        [HttpPut]
+        [ProducesResponseType(typeof(GenreVO), 202)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Put([FromBody]GenreVO item)
+        {
+            if (item == null) return BadRequest();
+            var updatedItem = _business.Update(item);
+            if (updatedItem == null) return NoContent();
+            return new OkObjectResult(updatedItem);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Delete(int id)
+        {
+            _business.Delete(id);
+            return NoContent();
+        }
+
+        //[ApiExplorerSettings(IgnoreApi = true)]
         [Route("[action]/{order}")]
         [Route("[action]")]
         [HttpGet]
+        [ProducesResponseType(typeof(List<_vw_mc_genero>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetMovieCount(int order = (int)enMovieCount.count)
         {
-            var ret = _genreService.FindMovieCount((enMovieCount)order);
+            var ret = _business.FindMovieCount((enMovieCount)order);
             if (ret == null) return NotFound();
             ViewResponse<_vw_mc_genero> vr = new ViewResponse<_vw_mc_genero>();
             vr.server_response = ret;
             return Ok(vr);
-        }
-
-        //Mapeia as requisições POST para http://localhost:{porta}/api/genre/
-        //O [FromBody] consome o Objeto JSON enviado no corpo da requisição
-        [HttpPost]
-        public IActionResult Post([FromBody]GenreVO genre)
-        {
-            if (genre == null) return BadRequest();
-            return new  ObjectResult(_genreService.Create(genre));
-        }
-
-        //Mapeia as requisições PUT para http://localhost:{porta}/api/genre/
-        //O [FromBody] consome o Objeto JSON enviado no corpo da requisição
-        [HttpPut("{id}")]
-        public IActionResult Put([FromBody]GenreVO genre)
-        {
-            if (genre == null) return BadRequest();
-            var updatedGenre = _genreService.Update(genre);
-            if (updatedGenre == null) return NoContent();
-            return new ObjectResult(updatedGenre);
-        }
-
-
-        //Mapeia as requisições DELETE para http://localhost:{porta}/api/genre/{id}
-        //recebendo um ID como no Path da requisição
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _genreService.Delete(id);
-            return NoContent();
         }
     }
 }

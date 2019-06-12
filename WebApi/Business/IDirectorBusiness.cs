@@ -1,16 +1,18 @@
-﻿using WebApi.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using WebApi.Data.VO;
+using WebApi.Model;
 
 namespace WebApi.Business
 {
     public interface IDirectorBusiness
     {
-        Director Create(Director director);
-        Director FindById(long id);
-        List<Director> FindByName(string name);
-        List<Director> FindAll();
+        DirectorVO Create(DirectorVO item);
+        DirectorVO FindById(long id);
+        List<DirectorVO> FindByName(string name);
+		DirectorVO FindByExactName(string name);
+        List<DirectorVO> FindAll();
 
-        Director Update(Director director);
+        DirectorVO Update(DirectorVO item);
         void Delete(long id);
 
         List<_vw_mc_diretor> FindMovieCount(enMovieCount order);

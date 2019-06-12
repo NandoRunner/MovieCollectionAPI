@@ -6,12 +6,13 @@ namespace WebApi.Business
 {
     public interface IGenreBusiness
     {
-        GenreVO Create(GenreVO genre);
+        GenreVO Create(GenreVO item);
         GenreVO FindById(long id);
         List<GenreVO> FindByName(string name);
+		GenreVO FindByExactName(string name);
         List<GenreVO> FindAll();
 
-        GenreVO Update(GenreVO genre);
+        GenreVO Update(GenreVO item);
         void Delete(long id);
 
         List<_vw_mc_genero> FindMovieCount(enMovieCount order);

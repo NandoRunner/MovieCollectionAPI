@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using WebApi.Model;
-using System.Threading;
-using WebApi.Model.Context;
-using System;
-using System.Linq;
 using WebApi.Repository;
 using WebApi.Repository.Generic;
 using WebApi.Data.Converters;
@@ -26,9 +22,9 @@ namespace WebApi.Business.Implementattions
             _vrep = vrep;
         }
 
-        public GenreVO Create(GenreVO genre)
+        public GenreVO Create(GenreVO item)
         {
-            var ent = _converter.Parse(genre);
+            var ent = _converter.Parse(item);
             ent = _repository.Create(ent);
             return _converter.Parse(ent);
         }
@@ -43,14 +39,19 @@ namespace WebApi.Business.Implementattions
             return _converter.ParseList(_repository.FindByName(name));
         }
 
+        public GenreVO FindByExactName(string name)
+        {
+            return _converter.Parse(_repository.FindByExactName(name));
+        }
+
         public List<GenreVO> FindAll()
         {
             return _converter.ParseList(_repository.FindAll());
         }
 
-        public GenreVO Update(GenreVO genre)
+        public GenreVO Update(GenreVO item)
         {
-            var ent = _converter.Parse(genre);
+            var ent = _converter.Parse(item);
             ent = _repository.Update(ent);
             return _converter.Parse(ent);
         }

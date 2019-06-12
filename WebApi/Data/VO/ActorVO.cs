@@ -3,7 +3,7 @@ using Tapioca.HATEOAS;
 
 namespace WebApi.Data.VO
 {
-    public class GenreVO : ISupportsHyperMedia
+    public class ActorVO : ISupportsHyperMedia
     {
         public long? Id { get; set; }
 

@@ -6,37 +6,37 @@ using WebApi.Model;
 
 namespace WebApi.Data.Converters
 {
-    public class GenreConverter : IParser<GenreVO, Genre>, IParser<Genre, GenreVO>
+    public class ActorConverter : IParser<ActorVO, Actor>, IParser<Actor, ActorVO>
     {
-        public Genre Parse(GenreVO origin)
+        public Actor Parse(ActorVO origin)
         {
-            if (origin == null) return new Genre();
-            return new Genre
+            if (origin == null) return new Actor();
+            return new Actor
             {
                 id = origin.Id,
                 name = origin.Name
             };
         }
 
-        public GenreVO Parse(Genre origin)
+        public ActorVO Parse(Actor origin)
         {
-            if (origin == null) return new GenreVO();
-            return new GenreVO
+            if (origin == null) return new ActorVO();
+            return new ActorVO
             {
                 Id = origin.id,
                 Name = origin.name
             };
         }
 
-        public List<Genre> ParseList(List<GenreVO> origin)
+        public List<Actor> ParseList(List<ActorVO> origin)
         {
-            if (origin == null) return new List<Genre>();
+            if (origin == null) return new List<Actor>();
             return origin.Select(item => Parse(item)).ToList();
         }
 
-        public List<GenreVO> ParseList(List<Genre> origin)
+        public List<ActorVO> ParseList(List<Actor> origin)
         {
-            if (origin == null) return new List<GenreVO>();
+            if (origin == null) return new List<ActorVO>();
             return origin.Select(item => Parse(item)).ToList();
         }
     }

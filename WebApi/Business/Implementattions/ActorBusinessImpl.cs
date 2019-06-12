@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using WebApi.Repository;
 using WebApi.Repository.Generic;
+using WebApi.Data.Converters;
+using WebApi.Data.VO;
 
 namespace WebApi.Business.Implementattions
 {
@@ -13,38 +15,49 @@ namespace WebApi.Business.Implementattions
     {
         private readonly IRepository<Actor> _repository;
 
-        private readonly IViewRepository<_vw_mc_ator> _vrep;
+        private readonly ActorConverter _converter;
 
+        private readonly IViewRepository<_vw_mc_ator> _vrep;
 
         public ActorBusinessImpl(IRepository<Actor> repository, IViewRepository<_vw_mc_ator> vrep)
         {
             _repository = repository;
+            _converter = new ActorConverter();
             _vrep = vrep;
         }
 
-        public Actor Create(Actor actor)
+        public ActorVO Create(ActorVO item)
         {
-            return _repository.Create(actor);
+            var ent = _converter.Parse(item);
+            ent = _repository.Create(ent);
+            return _converter.Parse(ent);
         }
 
-        public Actor FindById(long id)
+        public ActorVO FindById(long id)
         {
-            return _repository.FindById(id);
+            return _converter.Parse(_repository.FindById(id));
         }
 
-        public List<Actor> FindByName(string name)
+        public List<ActorVO> FindByName(string name)
         {
-            return _repository.FindByName(name);
+            return _converter.ParseList(_repository.FindByName(name));
         }
 
-        public List<Actor> FindAll()
+        public ActorVO FindByExactName(string name)
         {
-            return _repository.FindAll();
+            return _converter.Parse(_repository.FindByExactName(name));
         }
 
-        public Actor Update(Actor actor)
+        public List<ActorVO> FindAll()
         {
-            return  _repository.Update(actor);
+            return _converter.ParseList(_repository.FindAll());
+        }
+
+        public ActorVO Update(ActorVO item)
+        {
+            var ent = _converter.Parse(item);
+            ent = _repository.Update(ent);
+            return _converter.Parse(ent);
         }
 
         public void Delete(long id)
