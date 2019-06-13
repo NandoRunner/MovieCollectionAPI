@@ -29,4 +29,22 @@ namespace WebApi.Model.Base
         public decimal rating { get; set; }
     }
 
+
+    public class BaseViewMovieBy
+    {
+        [Key]
+        public long id { get; set; }
+
+        public string nome { get; set; }
+
+        [Key]
+        public long filme_id { get; set; }
+
+        public string titulo { get; set; }
+
+        public long ano { get; set; }
+
+        public decimal rating { get; set; }
+    }
+
 }

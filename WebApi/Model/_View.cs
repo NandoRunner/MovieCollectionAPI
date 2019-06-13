@@ -17,4 +17,9 @@ namespace WebApi.Model
         public List<T> server_response { get; set; }
     }
 
+    public class ViewResponseMovieBy<T> where T : BaseViewMovieBy
+    {
+        public List<T> server_response { get; set; }
+    }
+
 }

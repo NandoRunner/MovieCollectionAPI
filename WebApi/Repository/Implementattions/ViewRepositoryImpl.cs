@@ -31,7 +31,29 @@ namespace WebApi.Repository.Implementattions
                 return dataset.OrderByDescending(p => p.filmes).ToList();
             }
         }
+    }
 
-       
+    public class ViewMovieByRepositoryImpl<T> : IViewMovieByRepository<T> where T : BaseViewMovieBy
+    {
+        private MySQLContext _context;
+        private DbSet<T> dataset;
+
+        public ViewMovieByRepositoryImpl(MySQLContext context)
+        {
+            _context = context;
+            dataset = _context.Set<T>();
+        }
+
+        public List<T> FindMovieBy(long id, enMovieCount order)
+        {
+            if (order == enMovieCount.name)
+            {
+                return dataset.Where(a => a.id == id).OrderBy(p => p.nome).ToList();
+            }
+            else
+            {
+                return dataset.Where(a => a.id == id).OrderByDescending(p => p.titulo).ToList();
+            }
+        }
     }
 }

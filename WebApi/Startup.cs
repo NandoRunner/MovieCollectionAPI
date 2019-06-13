@@ -86,6 +86,7 @@ namespace WebApi
             services.AddScoped(typeof(IRepositoryInter<>), typeof(GenericRepositoryInter<>));
 
             services.AddScoped(typeof(IViewRepository<>), typeof(ViewRepositoryImpl<>));
+            services.AddScoped(typeof(IViewMovieByRepository<>), typeof(ViewMovieByRepositoryImpl<>));
 
             services.AddScoped<IMovieBusiness, MovieBusinessImpl>();
             services.AddScoped<IMovieRepository, MovieRepositoryImpl>();

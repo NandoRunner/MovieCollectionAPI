@@ -9,4 +9,6 @@ namespace WebApi.Model
     public class Actor : BaseEntity { }
     
     public class _vw_mc_ator : BaseView { }
+    
+    public class _vw_mc_filme_por_ator : BaseViewMovieBy { }
 }

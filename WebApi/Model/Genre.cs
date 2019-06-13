@@ -10,4 +10,6 @@ namespace WebApi.Model
 
     public class _vw_mc_genero : BaseView {
     }
+
+    public class _vw_mc_filme_por_genero : BaseViewMovieBy { }
 }

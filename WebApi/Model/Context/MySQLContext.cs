@@ -25,6 +25,11 @@ namespace WebApi.Model.Context
         public DbSet<_vw_mc_filme_ver> vw_mc_filme_ver { get; set; }
         public DbSet<_vw_mc_genero> vw_mc_genero { get; set; }
 
+        public DbSet<_vw_mc_filme_por_ator> vw_mc_filme_por_ator { get; set; }
+        public DbSet<_vw_mc_filme_por_diretor> vw_mc_filme_por_diretor { get; set; }
+        public DbSet<_vw_mc_filme_por_genero> vw_mc_filme_por_genero { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Actor>()
@@ -41,6 +46,15 @@ namespace WebApi.Model.Context
                 .Property<long?>("id").HasColumnName("dir_diretor_id");
             modelBuilder.Entity<Director>()
                 .Property<string>("name").HasColumnName("dir_nome");
+
+            modelBuilder.Entity<_vw_mc_filme_por_ator>()
+                .HasKey(c => new { c.id, c.filme_id });
+
+            modelBuilder.Entity<_vw_mc_filme_por_diretor>()
+                .HasKey(c => new { c.id, c.filme_id });
+
+            modelBuilder.Entity<_vw_mc_filme_por_genero>()
+                .HasKey(c => new { c.id, c.filme_id });
 
         }
     }

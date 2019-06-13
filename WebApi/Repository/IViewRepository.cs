@@ -8,4 +8,11 @@ namespace WebApi.Repository
     {
         List<T> FindMovieCount(enMovieCount order);
     }
+
+    public interface IViewMovieByRepository<T> where T : BaseViewMovieBy
+    {
+        List<T> FindMovieBy(long id, enMovieCount order);
+    }
+
+
 }
