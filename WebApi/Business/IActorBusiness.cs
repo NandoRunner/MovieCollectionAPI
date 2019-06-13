@@ -16,5 +16,7 @@ namespace WebApi.Business
         void Delete(long id);
 
         List<_vw_mc_ator> FindMovieCount(enMovieCount order);
+		List<_vw_mc_filme_por_ator> FindMovieBy(long id, enMovieCount order);
+		List<_vw_mc_filme_por_ator> FindMovieByName(string name, enMovieCount order);
     }
 }

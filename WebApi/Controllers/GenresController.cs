@@ -142,5 +142,22 @@ namespace WebApi.Controllers
             vr.server_response = ret;
             return Ok(vr);
         }
+
+
+        [Route("[action]/{name}/{order}")]
+        [Route("[action]/{name}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_por_genero>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.count)
+        {
+            var ret = _business.FindMovieByName(name, (enMovieCount)order);
+            if (ret == null) return NotFound();
+            ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>();
+            vr.server_response = ret;
+            return Ok(vr);
+        }
     }
 }

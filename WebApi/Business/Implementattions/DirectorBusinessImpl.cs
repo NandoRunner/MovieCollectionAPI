@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using WebApi.Model;
-using System.Threading;
-using WebApi.Model.Context;
-using System;
-using System.Linq;
 using WebApi.Repository;
 using WebApi.Repository.Generic;
 using WebApi.Data.Converters;
@@ -19,11 +15,15 @@ namespace WebApi.Business.Implementattions
 		
         private readonly IViewRepository<_vw_mc_diretor> _vrep;
 
-        public DirectorBusinessImpl(IRepository<Director> repository, IViewRepository<_vw_mc_diretor> vrep)
+        private readonly IViewMovieByRepository<_vw_mc_filme_por_diretor> _vmbrep;
+
+        public DirectorBusinessImpl(IRepository<Director> repository, IViewRepository<_vw_mc_diretor> vrep
+			, IViewMovieByRepository<_vw_mc_filme_por_diretor> vmbrep)
         {
             _repository = repository;
             _converter = new DirectorConverter();
             _vrep = vrep;
+            _vmbrep = vmbrep;
         }
 
         public DirectorVO Create(DirectorVO item)
@@ -68,6 +68,16 @@ namespace WebApi.Business.Implementattions
         public List<_vw_mc_diretor> FindMovieCount(enMovieCount order)
         {
             return _vrep.FindMovieCount(order);
+        }
+
+        public List<_vw_mc_filme_por_diretor> FindMovieBy(long id, enMovieCount order)
+        {
+            return _vmbrep.FindMovieBy(id, order);
+        }
+
+        public List<_vw_mc_filme_por_diretor> FindMovieByName(string name, enMovieCount order)
+        {
+            return _vmbrep.FindMovieByName(name, order);
         }
     }
 }

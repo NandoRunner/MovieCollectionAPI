@@ -17,7 +17,8 @@ namespace WebApi.Business.Implementattions
 
         private readonly IViewMovieByRepository<_vw_mc_filme_por_genero> _vmbrep;
 
-        public GenreBusinessImpl(IRepository<Genre> repository, IViewRepository<_vw_mc_genero> vrep, IViewMovieByRepository<_vw_mc_filme_por_genero> vmbrep)
+        public GenreBusinessImpl(IRepository<Genre> repository, IViewRepository<_vw_mc_genero> vrep
+			, IViewMovieByRepository<_vw_mc_filme_por_genero> vmbrep)
         {
             _repository = repository;
             _converter = new GenreConverter();
@@ -72,6 +73,11 @@ namespace WebApi.Business.Implementattions
         public List<_vw_mc_filme_por_genero> FindMovieBy(long id, enMovieCount order)
         {
             return _vmbrep.FindMovieBy(id, order);
+        }
+
+        public List<_vw_mc_filme_por_genero> FindMovieByName(string name, enMovieCount order)
+        {
+            return _vmbrep.FindMovieByName(name, order);
         }
     }
 }

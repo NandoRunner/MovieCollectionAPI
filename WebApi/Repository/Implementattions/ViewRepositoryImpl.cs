@@ -55,5 +55,17 @@ namespace WebApi.Repository.Implementattions
                 return dataset.Where(a => a.id == id).OrderByDescending(p => p.titulo).ToList();
             }
         }
+
+        public List<T> FindMovieByName(string name, enMovieCount order)
+        {
+            if (order == enMovieCount.name)
+            {
+                return dataset.Where(a => a.nome == name).OrderBy(p => p.nome).ToList();
+            }
+            else
+            {
+                return dataset.Where(a => a.nome == name).OrderByDescending(p => p.titulo).ToList();
+            }
+        }
     }
 }
