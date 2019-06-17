@@ -134,7 +134,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieBy(long id, int order = (int)enMovieCount.count)
+        public IActionResult GetMovieBy(long id, int order = (int)enMovieCount.title)
         {
             var ret = _business.FindMovieBy(id, (enMovieCount)order);
             if (ret == null) return NotFound();
@@ -151,7 +151,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.count)
+        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.title)
         {
             var ret = _business.FindMovieByName(name, (enMovieCount)order);
             if (ret == null) return NotFound();

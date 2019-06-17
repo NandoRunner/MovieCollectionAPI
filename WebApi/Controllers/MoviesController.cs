@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.Model;
 using WebApi.Business;
+using System.Collections.Generic;
+
 namespace WebApi.Controllers
 {
 
@@ -26,6 +28,10 @@ namespace WebApi.Controllers
         //Mapeia as requisições GET para http://localhost:{porta}/api/movie/
         //Get sem parâmetros para o FindAll --> Busca Todos
         [HttpGet]
+        [ProducesResponseType(typeof(List<Movie>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Get()
         {
             return Ok(_movieBusiness.FindAll());
@@ -35,6 +41,10 @@ namespace WebApi.Controllers
         //recebendo um ID como no Path da requisição
         //Get com parâmetros para o FindById --> Busca Por ID
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Movie), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Get(long id)
         {
             var movie = _movieBusiness.FindById(id);
@@ -44,6 +54,10 @@ namespace WebApi.Controllers
 		
         [Route("[action]/{name}")]
         [HttpGet]
+        [ProducesResponseType(typeof(List<Movie>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetByName(string name)
         {
             var ret = _movieBusiness.FindByName(name);
@@ -54,24 +68,36 @@ namespace WebApi.Controllers
         [Route("[action]/{order}")]
         [Route("[action]")]
         [HttpGet]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_visto>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetWatched(int order = (int)enMovieCount.periodo)
         {
             var ret = _movieBusiness.FindWatched((enMovieCount)order);
             if (ret == null) return NotFound();
-            ViewResponseMovie<_vw_mc_filme_visto> vr = new ViewResponseMovie<_vw_mc_filme_visto>();
-            vr.server_response = ret;
+            ViewResponseMovie<_vw_mc_filme_visto> vr = new ViewResponseMovie<_vw_mc_filme_visto>
+            {
+                server_response = ret
+            };
             return Ok(vr);
         }
 
         [Route("[action]/{order}")]
         [Route("[action]")]
         [HttpGet]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_ver>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetAvailable(int order = (int)enMovieCount.rating)
         {
             var ret = _movieBusiness.FindAvailable((enMovieCount)order);
             if (ret == null) return NotFound();
-            ViewResponseMovie<_vw_mc_filme_ver> vr = new ViewResponseMovie<_vw_mc_filme_ver>();
-            vr.server_response = ret;
+            ViewResponseMovie<_vw_mc_filme_ver> vr = new ViewResponseMovie<_vw_mc_filme_ver>
+            {
+                server_response = ret
+            };
             return Ok(vr);
         }
 
