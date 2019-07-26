@@ -20,15 +20,21 @@ namespace WebApi.Repository.Implementattions
             dataset = _context.Set<T>();
         }
         
-        public List<T> FindMovieCount(enMovieCount order)
+        public List<T> FindMovieCount(enMovieCount order, bool isAscending)
         {
             if (order == enMovieCount.name)
             {
-                return dataset.OrderBy(p => p.nome).ToList();
+                if (isAscending)
+                    return dataset.OrderBy(p => p.nome).ToList();
+                else
+                    return dataset.OrderByDescending(p => p.nome).ToList();
             }
             else
             {
-                return dataset.OrderByDescending(p => p.filmes).ToList();
+                if (isAscending)
+                    return dataset.OrderBy(p => p.filmes).ToList();
+                else
+                    return dataset.OrderByDescending(p => p.filmes).ToList();
             }
         }
     }

@@ -52,27 +52,39 @@ namespace WebApi.Repository.Implementattions
             return _context.Movies.OrderBy(a => a.titulo).ToList();
         }
 
-        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order)
+        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending)
         {
             if (order == enMovieCount.periodo)
             {
-                return _context.vw_mc_filme_visto.OrderByDescending(p => p.periodo).ToList();
+                if (isAscending)
+                    return _context.vw_mc_filme_visto.OrderBy(p => p.periodo).ToList();
+                else
+                    return _context.vw_mc_filme_visto.OrderByDescending(p => p.periodo).ToList();
             }
             else
             {
-                return _context.vw_mc_filme_visto.OrderBy(p => p.titulo).ToList();
+                if (isAscending)
+                    return _context.vw_mc_filme_visto.OrderBy(p => p.titulo).ToList();
+                else
+                    return _context.vw_mc_filme_visto.OrderByDescending(p => p.titulo).ToList();
             }
         }
 
-        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order)
+        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending)
         {
             if (order == enMovieCount.rating)
             {
-                return _context.vw_mc_filme_ver.OrderByDescending(p => p.rating).ToList();
+                if (isAscending)
+                    return _context.vw_mc_filme_ver.OrderBy(p => p.rating).ToList();
+                else
+                    return _context.vw_mc_filme_ver.OrderByDescending(p => p.rating).ToList();
             }
             else
             {
-                return _context.vw_mc_filme_ver.OrderBy(p => p.titulo).ToList();
+                if (isAscending)
+                    return _context.vw_mc_filme_ver.OrderBy(p => p.titulo).ToList();
+                else
+                    return _context.vw_mc_filme_ver.OrderByDescending(p => p.titulo).ToList();
             }
         }
     }

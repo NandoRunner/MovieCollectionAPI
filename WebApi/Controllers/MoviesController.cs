@@ -65,16 +65,16 @@ namespace WebApi.Controllers
             return Ok(ret);
         }
 		
-        [Route("[action]/{order}")]
+        [Route("[action]/{order}/{isAscending}")]
         [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_filme_visto>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetWatched(int order = (int)enMovieCount.periodo)
+        public IActionResult GetWatched(int order = (int)enMovieCount.periodo, bool isAscending = true)
         {
-            var ret = _movieBusiness.FindWatched((enMovieCount)order);
+            var ret = _movieBusiness.FindWatched((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_visto> vr = new ViewResponseMovie<_vw_mc_filme_visto>
             {
@@ -83,16 +83,16 @@ namespace WebApi.Controllers
             return Ok(vr);
         }
 
-        [Route("[action]/{order}")]
+        [Route("[action]/{order}/{isAscending}")]
         [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_filme_ver>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAvailable(int order = (int)enMovieCount.rating)
+        public IActionResult GetAvailable(int order = (int)enMovieCount.rating, bool isAscending = true)
         {
-            var ret = _movieBusiness.FindAvailable((enMovieCount)order);
+            var ret = _movieBusiness.FindAvailable((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_ver> vr = new ViewResponseMovie<_vw_mc_filme_ver>
             {

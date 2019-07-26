@@ -6,7 +6,7 @@ namespace WebApi.Repository
 {
     public interface IViewRepository<T> where T : BaseView
     {
-        List<T> FindMovieCount(enMovieCount order);
+        List<T> FindMovieCount(enMovieCount order, bool isAscending);
     }
 
     public interface IViewMovieByRepository<T> where T : BaseViewMovieBy

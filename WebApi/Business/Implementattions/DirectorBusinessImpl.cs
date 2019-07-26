@@ -65,9 +65,9 @@ namespace WebApi.Business.Implementattions
             _repository.Delete(id);
         }
 
-        public List<_vw_mc_diretor> FindMovieCount(enMovieCount order)
+        public List<_vw_mc_diretor> FindMovieCount(enMovieCount order, bool isAscending)
         {
-            return _vrep.FindMovieCount(order);
+            return _vrep.FindMovieCount(order, isAscending);
         }
 
         public List<_vw_mc_filme_por_diretor> FindMovieBy(long id, enMovieCount order)

@@ -39,14 +39,14 @@ namespace WebApi.Business.Implementattions
 			return _repository.FindAll();
         }
 
-        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order)
+        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending)
         {
-            return _repository.FindWatched(order);
+            return _repository.FindWatched(order, isAscending);
         }
 
-        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order)
+        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending)
         {
-            return _repository.FindAvailable(order);
+            return _repository.FindAvailable(order, isAscending);
         }
 
 

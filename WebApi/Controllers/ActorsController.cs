@@ -111,16 +111,16 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        [Route("[action]/{order}")]
+        [Route("[action]/{order}/{isAscending}")]
         [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_ator>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieCount(int order = (int)enMovieCount.count)
+        public IActionResult GetMovieCount(int order = (int)enMovieCount.count, bool isAscending = true)
         {
-            var ret = _business.FindMovieCount((enMovieCount)order);
+            var ret = _business.FindMovieCount((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponse<_vw_mc_ator> vr = new ViewResponse<_vw_mc_ator>();
             vr.server_response = ret;

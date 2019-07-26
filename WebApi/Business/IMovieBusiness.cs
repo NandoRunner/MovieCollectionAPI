@@ -10,7 +10,7 @@ namespace WebApi.Business
         List<Movie> FindByName(string name);
         List<Movie> FindAll();
 
-        List<_vw_mc_filme_visto> FindWatched(enMovieCount order);
-        List<_vw_mc_filme_ver> FindAvailable(enMovieCount order);
+        List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending);
+        List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending);
     }
 }

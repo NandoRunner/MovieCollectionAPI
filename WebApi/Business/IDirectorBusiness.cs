@@ -15,7 +15,7 @@ namespace WebApi.Business
         DirectorVO Update(DirectorVO item);
         void Delete(long id);
 
-        List<_vw_mc_diretor> FindMovieCount(enMovieCount order);
+        List<_vw_mc_diretor> FindMovieCount(enMovieCount order, bool isAscending);
         List<_vw_mc_filme_por_diretor> FindMovieBy(long id, enMovieCount order);
         List<_vw_mc_filme_por_diretor> FindMovieByName(string name, enMovieCount order);
     }
