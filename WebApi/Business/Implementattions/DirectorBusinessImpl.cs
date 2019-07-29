@@ -75,9 +75,9 @@ namespace WebApi.Business.Implementattions
             return _vmbrep.FindMovieBy(id, order);
         }
 
-        public List<_vw_mc_filme_por_diretor> FindMovieByName(string name, enMovieCount order)
+        public List<_vw_mc_filme_por_diretor> FindMovieByName(string name, enMovieCount order, bool isAscending)
         {
-            return _vmbrep.FindMovieByName(name, order);
+            return _vmbrep.FindMovieByName(name, order, isAscending);
         }
     }
 }

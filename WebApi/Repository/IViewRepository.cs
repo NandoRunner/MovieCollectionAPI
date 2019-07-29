@@ -13,7 +13,7 @@ namespace WebApi.Repository
     {
         List<T> FindMovieBy(long id, enMovieCount order);
 
-        List<T> FindMovieByName(string name, enMovieCount order);
+        List<T> FindMovieByName(string name, enMovieCount order, bool isAscending);
 
     }
 

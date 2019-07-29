@@ -62,17 +62,23 @@ namespace WebApi.Repository.Implementattions
             }
         }
 
-        public List<T> FindMovieByName(string name, enMovieCount order)
+        public List<T> FindMovieByName(string name, enMovieCount order, bool isAscending)
         {
             name = name.Replace("&nbsp;", " ");
 
             if (order == enMovieCount.title)
             {
-                return dataset.Where(a => a.nome == name).OrderBy(p => p.titulo).ToList();
+                if (isAscending)
+                    return dataset.Where(a => a.nome == name).OrderBy(p => p.titulo).ToList();
+                else
+                    return dataset.Where(a => a.nome == name).OrderByDescending(p => p.titulo).ToList();
             }
             else
             {
-                return dataset.Where(a => a.nome == name).OrderByDescending(p => p.rating).ToList();
+                if (isAscending)
+                    return dataset.Where(a => a.nome == name).OrderBy(p => p.rating).ToList();
+                else
+                    return dataset.Where(a => a.nome == name).OrderByDescending(p => p.rating).ToList();
             }
         }
     }

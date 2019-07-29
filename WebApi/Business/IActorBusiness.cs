@@ -17,6 +17,6 @@ namespace WebApi.Business
 
         List<_vw_mc_ator> FindMovieCount(enMovieCount order, bool isAscending);
 		List<_vw_mc_filme_por_ator> FindMovieBy(long id, enMovieCount order);
-		List<_vw_mc_filme_por_ator> FindMovieByName(string name, enMovieCount order);
+		List<_vw_mc_filme_por_ator> FindMovieByName(string name, enMovieCount order, bool isAscending);
     }
 }

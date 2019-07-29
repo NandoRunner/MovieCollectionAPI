@@ -148,16 +148,16 @@ namespace WebApi.Controllers
         }
 
 
-        [Route("[action]/{name}/{order}")]
+        [Route("[action]/{name}/{order}/{isAscending}")]
         [Route("[action]/{name}")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_filme_por_genero>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.title)
+        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.title, bool isAscending = true)
         {
-            var ret = _business.FindMovieByName(name, (enMovieCount)order);
+            var ret = _business.FindMovieByName(name, (enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>
             {
