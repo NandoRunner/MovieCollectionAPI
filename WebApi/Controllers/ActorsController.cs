@@ -47,18 +47,20 @@ namespace WebApi.Controllers
             return new OkObjectResult(item);
         }
 
-        [Route("[action]/{name}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(List<ActorVO>), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult GetByName(string name)
-        {
-            var ret = _business.FindByName(name);
-            if (ret == null) return NotFound();
-            return Ok(ret);
-        }
+        /* Path Param */
+
+        //[Route("[action]/{name}")]
+        //[HttpGet]
+        //[ProducesResponseType(typeof(List<ActorVO>), 200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+        //public IActionResult GetByName(string name)
+        //{
+        //    var ret = _business.FindByName(name);
+        //    if (ret == null) return NotFound();
+        //    return Ok(ret);
+        //}
         
         [Route("[action]/{name}")]
         [HttpGet]
@@ -73,6 +75,20 @@ namespace WebApi.Controllers
             return Ok(ret);
         }
 
+        /* Query Param - accepts null*/
+        [Route("[action]")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ActorVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetByName([FromQuery] string name)
+        {
+            var ret = _business.FindByName(name);
+            if (ret == null) return NotFound();
+            return Ok(ret);
+        }
+        
         [HttpPost]
         [ProducesResponseType(typeof(ActorVO), 201)]
         [ProducesResponseType(400)]

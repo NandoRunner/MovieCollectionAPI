@@ -73,7 +73,14 @@ namespace WebApi.Repository.Generic
 
         public List<T> FindByName(string name)
         {
-            return dataset.Where(a => a.name.Contains(name)).OrderBy(a => a.name).ToList();
+            if (!string.IsNullOrEmpty(name))
+            { 
+                return dataset.Where(a => a.name.Contains(name)).OrderBy(a => a.name).ToList();
+            }
+            else
+            {
+                return dataset.OrderBy(a => a.name).ToList();
+            }
         }
 
         public T FindByExactName(string name)
