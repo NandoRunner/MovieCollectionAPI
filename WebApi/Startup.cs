@@ -127,7 +127,12 @@ namespace WebApi
 
             app.UseSwaggerUI(c =>
             {
+#if DEBUG
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
+#else
+                   // To deploy on IIS
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1");
+#endif
             });
 
             //Starting our API in Swagger page
