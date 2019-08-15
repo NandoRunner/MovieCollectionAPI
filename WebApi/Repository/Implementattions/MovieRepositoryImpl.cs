@@ -4,16 +4,24 @@ using System.Threading;
 using WebApi.Model.Context;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Repository.Implementattions
 {
     public class MovieRepositoryImpl : IMovieRepository
     {
         private MySQLContext _context;
+        private DbSet<Movie> dataset;
+
+        private DbSet<_vw_mc_filme_visto> ds2;
+        private DbSet<_vw_mc_filme_ver> ds3;
 
         public MovieRepositoryImpl(MySQLContext context)
         {
             _context = context;
+            dataset = _context.Set<Movie>();
+            ds2 = _context.Set<_vw_mc_filme_visto>();
+            ds3 = _context.Set<_vw_mc_filme_ver>();
         }
 
         // Metodo responsável por criar uma nova pessoa
@@ -86,6 +94,38 @@ namespace WebApi.Repository.Implementattions
                 else
                     return _context.vw_mc_filme_ver.OrderByDescending(p => p.titulo).ToList();
             }
+        }
+
+        public List<Movie> FindWithPagedSearch(string query)
+        {
+            return dataset.FromSql<Movie>(query).ToList();
+        }
+
+        public int GetCount(string query)
+        {
+            // https://stackoverflow.com/questions/40557003/entity-framework-core-count-does-not-have-optimal-performance
+            var result = "";
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+                    result = command.ExecuteScalar().ToString();
+                }
+            }
+            return Int32.Parse(result);
+        }
+
+        public List<_vw_mc_filme_visto> FindWatchedPagedSearch(string query)
+        {
+            return ds2.FromSql<_vw_mc_filme_visto>(query).ToList();
+        }
+
+        public List<_vw_mc_filme_ver> FindAvailablePagedSearch(string query)
+        {
+            return ds3.FromSql<_vw_mc_filme_ver>(query).ToList();
         }
     }
 }

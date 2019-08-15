@@ -101,6 +101,40 @@ namespace WebApi.Controllers
             return Ok(vr);
         }
 
+        // Configura o Swagger para a operação
+        // http://localhost:{porta}/api/persons/v1/
+        // [SwaggerResponse((202), Type = typeof(List<Person>))]
+        // determina o objeto de retorno em caso de sucesso List<Person>
+        // O [SwaggerResponse(XYZ)] define os códigos de retorno 204, 400 e 401
+        [HttpGet("find-with-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType(typeof(List<Movie>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetPagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        {
+            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+        }
+
+        [HttpGet("find-watched-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_visto>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetWatchedPagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        {
+            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+        }
+
+        [HttpGet("find-available-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_ver>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAvailablePagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        {
+            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+        }
 
         //Mapeia as requisições POST para http://localhost:{porta}/api/movie/
         //O [FromBody] consome o Objeto JSON enviado no corpo da requisição

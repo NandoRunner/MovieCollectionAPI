@@ -12,5 +12,11 @@ namespace WebApi.Repository
 
         List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending);
         List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending);
+
+        List<Movie> FindWithPagedSearch(string query);
+        List<_vw_mc_filme_visto> FindWatchedPagedSearch(string query);
+        List<_vw_mc_filme_ver> FindAvailablePagedSearch(string query);
+
+        int GetCount(string query);
     }
 }
