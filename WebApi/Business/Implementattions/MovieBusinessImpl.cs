@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using WebApi.Repository;
 using Tapioca.HATEOAS.Utils;
+using System.Data.SqlClient;
 
 namespace WebApi.Business.Implementattions
 {
@@ -50,9 +51,11 @@ namespace WebApi.Business.Implementattions
             return _repository.FindAvailable(order, isAscending);
         }
 
-        public PagedSearchDTO<Movie> FindWithPagedSearch(string name, string sortDirection, int pageSize, int page)
+        public PagedSearchDTO<Movie> FindWithPagedSearch(string name, int pageSize, int page, bool isAscending)
         {
-            var query = MontarQuery("movies", name, sortDirection, pageSize, page);
+            var sort = isAscending ? "asc" : "desc";
+
+            var query = MontarQuery("movies", name, sort, pageSize, page, enMovieCount.title);
 
             var countQuery = MontarCountQuery("movies", name);
 
@@ -65,21 +68,24 @@ namespace WebApi.Business.Implementattions
                 CurrentPage = page + 1,
                 List = pagedResults,
                 PageSize = pageSize,
-                SortDirections = sortDirection,
+                SortDirections = sort,
                 TotalResults = totalResults
             };
         }
 
 
 
-        public PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, string sortDirection, int pageSize, int page)
+        public PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
         {
-            var query = MontarQuery("vw_mc_filme_visto", name, sortDirection, pageSize, page);
+            var sort = isAscending ? "asc" : "desc";
+
+            var query = MontarQuery("vw_mc_filme_visto", name, sort, pageSize, page, order);
 
             var countQuery = MontarCountQuery("vw_mc_filme_visto", name);
 
             var pagedResults = _repository.FindWatchedPagedSearch(query);
 
+            //int totalResults = _repository.GetCountWatched();
             int totalResults = _repository.GetCount(countQuery);
 
             return new PagedSearchDTO<_vw_mc_filme_visto>
@@ -87,19 +93,22 @@ namespace WebApi.Business.Implementattions
                 CurrentPage = page + 1,
                 List = pagedResults,
                 PageSize = pageSize,
-                SortDirections = sortDirection,
+                SortDirections = sort,
                 TotalResults = totalResults
             };
         }
 
-        public PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, string sortDirection, int pageSize, int page)
+        public PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
         {
-            var query = MontarQuery("vw_mc_filme_visto", name, sortDirection, pageSize, page);
+            var sort = isAscending ? "asc" : "desc";
 
-            var countQuery = MontarCountQuery("vw_mc_filme_visto", name);
+            var query = MontarQuery("vw_mc_filme_ver", name, sort, pageSize, page, order);
+
+            var countQuery = MontarCountQuery("vw_mc_filme_ver", name);
 
             var pagedResults = _repository.FindAvailablePagedSearch(query);
 
+            //int totalResults = _repository.GetCountAvailable();
             int totalResults = _repository.GetCount(countQuery);
 
             return new PagedSearchDTO<_vw_mc_filme_ver>
@@ -107,12 +116,12 @@ namespace WebApi.Business.Implementattions
                 CurrentPage = page + 1,
                 List = pagedResults,
                 PageSize = pageSize,
-                SortDirections = sortDirection,
+                SortDirections = sort,
                 TotalResults = totalResults
             };
         }
 
-        private string MontarQuery(string tabela, string name, string sortDirection, int pageSize, int page)
+        private string MontarQuery(string tabela, string name, string sortDirection, int pageSize, int page, enMovieCount order)
         {
             //page = page > 0 ? page - 1 : 0;
 
@@ -121,7 +130,16 @@ namespace WebApi.Business.Implementattions
             string query = $"select * from {tabela} p where 1 = 1 ";
             if (!string.IsNullOrEmpty(name)) query = query + $" and p.titulo like '%{name}%'";
 
-            return query + $" order by p.titulo {sortDirection} limit {pageSize} offset {page}";
+            string orderField;
+
+            if (order == enMovieCount.rating)
+                orderField = "p.rating";
+            else if (order == enMovieCount.periodo)
+                orderField = "p.periodo";
+            else
+                orderField = "p.titulo";
+
+            return query + $" order by {orderField} {sortDirection} limit {pageSize} offset {page}";
         }
 
         private string MontarCountQuery(string tabela, string name)

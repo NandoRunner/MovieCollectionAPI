@@ -2,6 +2,7 @@
 using WebApi.Model;
 using WebApi.Business;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace WebApi.Controllers
 {
@@ -106,34 +107,34 @@ namespace WebApi.Controllers
         // [SwaggerResponse((202), Type = typeof(List<Person>))]
         // determina o objeto de retorno em caso de sucesso List<Person>
         // O [SwaggerResponse(XYZ)] define os códigos de retorno 204, 400 e 401
-        [HttpGet("find-with-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [HttpGet("find-with-paged-search/{pageSize}/{page}/{isAscending}")]
         [ProducesResponseType(typeof(List<Movie>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetPagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        public IActionResult GetPagedSearch([FromQuery] string name, int pageSize, int page, bool isAscending = true)
         {
-            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, pageSize, page, isAscending));
         }
 
-        [HttpGet("find-watched-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [HttpGet("find-watched-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
         [ProducesResponseType(typeof(List<_vw_mc_filme_visto>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetWatchedPagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.periodo, bool isAscending = true)
         {
-            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+            return new OkObjectResult(_movieBusiness.FindWatchedPagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
         }
 
-        [HttpGet("find-available-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [HttpGet("find-available-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
         [ProducesResponseType(typeof(List<_vw_mc_filme_ver>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAvailablePagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.rating, bool isAscending = false)
         {
-            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+            return new OkObjectResult(_movieBusiness.FindAvailablePagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
         }
 
         //Mapeia as requisições POST para http://localhost:{porta}/api/movie/

@@ -1,6 +1,7 @@
 ﻿using WebApi.Model;
 using System.Collections.Generic;
 using Tapioca.HATEOAS.Utils;
+using System.Data.SqlClient;
 
 namespace WebApi.Business
 {
@@ -15,11 +16,11 @@ namespace WebApi.Business
         List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending);
 
 
-        PagedSearchDTO<Movie> FindWithPagedSearch(string name, string sortDirection, int pageSize, int page);
+        PagedSearchDTO<Movie> FindWithPagedSearch(string name, int pageSize, int page, bool isAscending);
 
-        PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, string sortDirection, int pageSize, int page);
+        PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending);
 
-        PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, string sortDirection, int pageSize, int page);
+        PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending);
 
 
     }
