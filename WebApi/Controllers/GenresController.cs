@@ -4,6 +4,7 @@ using WebApi.Business;
 using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -27,7 +28,6 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return new OkObjectResult(_business.FindAll());
@@ -45,14 +45,15 @@ namespace WebApi.Controllers
             if (item == null) return NotFound();
             return new OkObjectResult(item);
         }
-
-        [Route("[action]/{name}")]
+        
+        /* Query Param - accepts null*/
+        [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<GenreVO>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetByName(string name)
+        public IActionResult GetByName([FromQuery] string name)
         {
             var ret = _business.FindByName(name);
             if (ret == null) return NotFound();
@@ -76,6 +77,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(GenreVO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody]GenreVO item)
         {
@@ -90,6 +92,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(GenreVO), 202)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody]GenreVO item)
         {
@@ -103,6 +106,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete(int id)
         {
@@ -110,7 +114,6 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        //[ApiExplorerSettings(IgnoreApi = true)]
         [Route("[action]/{order}/{isAscending}")]
         [Route("[action]")]
         [HttpGet]
@@ -122,10 +125,8 @@ namespace WebApi.Controllers
         {
             var ret = _business.FindMovieCount((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
-            ViewResponse<_vw_mc_genero> vr = new ViewResponse<_vw_mc_genero>
-            {
-                server_response = ret
-            };
+            ViewResponse<_vw_mc_genero> vr = new ViewResponse<_vw_mc_genero>();
+            vr.server_response = ret;
             return Ok(vr);
         }
 
@@ -140,10 +141,8 @@ namespace WebApi.Controllers
         {
             var ret = _business.FindMovieBy(id, (enMovieCount)order);
             if (ret == null) return NotFound();
-            ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>
-            {
-                server_response = ret
-            };
+            ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>();
+            vr.server_response = ret;
             return Ok(vr);
         }
 
@@ -159,10 +158,8 @@ namespace WebApi.Controllers
         {
             var ret = _business.FindMovieByName(name, (enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
-            ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>
-            {
-                server_response = ret
-            };
+            ViewResponseMovieBy<_vw_mc_filme_por_genero> vr = new ViewResponseMovieBy<_vw_mc_filme_por_genero>();
+            vr.server_response = ret;
             return Ok(vr);
         }
     }

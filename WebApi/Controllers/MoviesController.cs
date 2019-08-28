@@ -1,29 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Tapioca.HATEOAS;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Model;
 using WebApi.Business;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
-
-    /* Mapeia as requisições de http://localhost:{porta}/api/movie/
-    Por padrão o ASP.NET Core mapeia todas as classes que extendem Controller
-    pegando a primeira parte do nome da classe em lower case [Movie]Controller
-    e expõe como endpoint REST
-    */
     [ApiVersion("1")]
     [Route("[controller]/v{version:apiVersion}")]
     public class MoviesController : Controller
     {
         //Declaração do serviço usado
-        private IMovieBusiness _movieBusiness;
+        private IMovieBusiness _business;
 
         /* Injeção de uma instancia de IMovieBusiness ao criar
         uma instancia de MovieController */
         public MoviesController(IMovieBusiness movieBusiness)
         {
-            _movieBusiness = movieBusiness;
+            _business = movieBusiness;
         }
 
         //Mapeia as requisições GET para http://localhost:{porta}/api/movie/
@@ -35,7 +30,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult Get()
         {
-            return Ok(_movieBusiness.FindAll());
+            return Ok(_business.FindAll());
         }
 
         //Mapeia as requisições GET para http://localhost:{porta}/api/movie/{id}
@@ -48,7 +43,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult Get(long id)
         {
-            var movie = _movieBusiness.FindById(id);
+            var movie = _business.FindById(id);
             if (movie == null) return NotFound();
             return Ok(movie);
         }
@@ -61,7 +56,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetByName(string name)
         {
-            var ret = _movieBusiness.FindByName(name);
+            var ret = _business.FindByName(name);
             if (ret == null) return NotFound();
             return Ok(ret);
         }
@@ -75,7 +70,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetWatched(int order = (int)enMovieCount.periodo, bool isAscending = true)
         {
-            var ret = _movieBusiness.FindWatched((enMovieCount)order, isAscending);
+            var ret = _business.FindWatched((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_visto> vr = new ViewResponseMovie<_vw_mc_filme_visto>
             {
@@ -93,7 +88,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetAvailable(int order = (int)enMovieCount.rating, bool isAscending = true)
         {
-            var ret = _movieBusiness.FindAvailable((enMovieCount)order, isAscending);
+            var ret = _business.FindAvailable((enMovieCount)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_ver> vr = new ViewResponseMovie<_vw_mc_filme_ver>
             {
@@ -114,7 +109,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetPagedSearch([FromQuery] string name, int pageSize, int page, bool isAscending = true)
         {
-            return new OkObjectResult(_movieBusiness.FindWithPagedSearch(name, pageSize, page, isAscending));
+            return new OkObjectResult(_business.FindWithPagedSearch(name, pageSize, page, isAscending));
         }
 
         [HttpGet("find-watched-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
@@ -124,7 +119,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.periodo, bool isAscending = true)
         {
-            return new OkObjectResult(_movieBusiness.FindWatchedPagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+            return new OkObjectResult(_business.FindWatchedPagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
         }
 
         [HttpGet("find-available-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
@@ -134,7 +129,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(401)]
         public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.rating, bool isAscending = false)
         {
-            return new OkObjectResult(_movieBusiness.FindAvailablePagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+            return new OkObjectResult(_business.FindAvailablePagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
         }
 
         //Mapeia as requisições POST para http://localhost:{porta}/api/movie/
@@ -143,26 +138,8 @@ namespace WebApi.Controllers
         public IActionResult Post([FromBody]Movie movie)
         {
             if (movie == null) return BadRequest();
-            return new  ObjectResult(_movieBusiness.Create(movie));
+            return new  ObjectResult(_business.Create(movie));
         }
 
-        //Mapeia as requisições PUT para http://localhost:{porta}/api/movie/
-        //O [FromBody] consome o Objeto JSON enviado no corpo da requisição
-        //[HttpPut("{id}")]
-        //public IActionResult Put([FromBody]Movie movie)
-        //{
-        //    if (movie == null) return BadRequest();
-        //    return new ObjectResult(_movieBusiness.Update(movie));
-        //}
-
-
-        //Mapeia as requisições DELETE para http://localhost:{porta}/api/movie/{id}
-        //recebendo um ID como no Path da requisição
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    _movieBusiness.Delete(id);
-        //    return NoContent();
-        //}
     }
 }

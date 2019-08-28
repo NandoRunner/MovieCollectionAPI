@@ -18,8 +18,5 @@ namespace WebApi.Repository
         List<_vw_mc_filme_ver> FindAvailablePagedSearch(string query);
 
         int GetCount(string query);
-
-        int GetCountWatched();
-        int GetCountAvailable();
     }
 }

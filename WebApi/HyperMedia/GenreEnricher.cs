@@ -10,7 +10,7 @@ namespace WebApi.HyperMedia
     {
         protected override Task EnrichModel(GenreVO content, IUrlHelper urlHelper)
         {
-            var path = "genres/v1";
+            var path = "Genres/v1";
             var url = new { controller = path, id = content.Id };
 
             content.Links.Add(new HyperMediaLink()

@@ -4,6 +4,7 @@ using WebApi.Business;
 using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -16,9 +17,9 @@ namespace WebApi.Controllers
 
         /* Injeção de uma instancia de IDirectorService ao criar
         uma instancia de DirectorController */
-        public DirectorsController(IDirectorBusiness directorService)
+        public DirectorsController(IDirectorBusiness itemBusiness)
         {
-            _business = directorService;
+            _business = itemBusiness;
         }
 
         //Get sem parâmetros para o FindAll --> Busca Todos
@@ -27,7 +28,6 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return new OkObjectResult(_business.FindAll());
@@ -46,13 +46,14 @@ namespace WebApi.Controllers
             return new OkObjectResult(item);
         }
         
-        [Route("[action]/{name}")]
+        /* Query Param - accepts null*/
+        [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<DirectorVO>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetByName(string name)
+        public IActionResult GetByName([FromQuery] string name)
         {
             var ret = _business.FindByName(name);
             if (ret == null) return NotFound();
@@ -76,6 +77,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(DirectorVO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody]DirectorVO item)
         {
@@ -90,6 +92,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(DirectorVO), 202)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody]DirectorVO item)
         {
@@ -103,12 +106,14 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete(int id)
         {
             _business.Delete(id);
             return NoContent();
         }
+
         [Route("[action]/{order}/{isAscending}")]
         [Route("[action]")]
         [HttpGet]

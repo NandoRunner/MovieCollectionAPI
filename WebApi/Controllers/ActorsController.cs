@@ -4,6 +4,7 @@ using WebApi.Business;
 using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -16,19 +17,17 @@ namespace WebApi.Controllers
         
         /* Injeção de uma instancia de IActorBusiness ao criar
         uma instancia de ActorController */
-        public ActorsController(IActorBusiness actorBusiness)
+        public ActorsController(IActorBusiness itemBusiness)
         {
-            _business = actorBusiness;
+            _business = itemBusiness;
         }
 
-        //Mapeia as requisições GET para http://localhost:{porta}/api/actor/
         //Get sem parâmetros para o FindAll --> Busca Todos
         [HttpGet]
         [ProducesResponseType(typeof(List<ActorVO>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return new OkObjectResult(_business.FindAll());
@@ -62,19 +61,6 @@ namespace WebApi.Controllers
         //    return Ok(ret);
         //}
         
-        [Route("[action]/{name}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(ActorVO), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult GetByExactName(string name)
-        {
-            var ret = _business.FindByExactName(name);
-            if (ret == null) return NotFound();
-            return Ok(ret);
-        }
-
         /* Query Param - accepts null*/
         [Route("[action]")]
         [HttpGet]
@@ -88,11 +74,25 @@ namespace WebApi.Controllers
             if (ret == null) return NotFound();
             return Ok(ret);
         }
-        
+
+        [Route("[action]/{name}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(ActorVO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetByExactName(string name)
+        {
+            var ret = _business.FindByExactName(name);
+            if (ret == null) return NotFound();
+            return Ok(ret);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ActorVO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody]ActorVO item)
         {
@@ -107,6 +107,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(ActorVO), 202)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody]ActorVO item)
         {
@@ -120,6 +121,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [Authorize("Bearer")]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete(int id)
         {

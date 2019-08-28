@@ -118,24 +118,6 @@ namespace WebApi.Repository.Implementattions
             return Int32.Parse(result);
         }
 
-        public int GetCountWatched()
-        {
-            try
-            {
-                return (from x in ds2 select x).Count();
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-                return 0;
-            }
-        }
-
-        public int GetCountAvailable()
-        {
-            return (from x in ds3 select x).Count();
-        }
-                
         public List<_vw_mc_filme_visto> FindWatchedPagedSearch(string query)
         {
             return ds2.FromSql<_vw_mc_filme_visto>(query).ToList();

@@ -29,6 +29,7 @@ namespace WebApi.Model.Context
         public DbSet<_vw_mc_filme_por_diretor> vw_mc_filme_por_diretor { get; set; }
         public DbSet<_vw_mc_filme_por_genero> vw_mc_filme_por_genero { get; set; }
 
+        public DbSet<WebUser> WebUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
