@@ -5,6 +5,7 @@ using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
 using Microsoft.AspNetCore.Authorization;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Controllers
 {
@@ -45,21 +46,6 @@ namespace WebApi.Controllers
             if (item == null) return NotFound();
             return new OkObjectResult(item);
         }
-
-        /* Path Param */
-
-        //[Route("[action]/{name}")]
-        //[HttpGet]
-        //[ProducesResponseType(typeof(List<ActorVO>), 200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
-        //public IActionResult GetByName(string name)
-        //{
-        //    var ret = _business.FindByName(name);
-        //    if (ret == null) return NotFound();
-        //    return Ok(ret);
-        //}
         
         /* Query Param - accepts null*/
         [Route("[action]")]
@@ -130,7 +116,6 @@ namespace WebApi.Controllers
         }
 
         [Route("[action]/{order}/{isAscending}")]
-        [Route("[action]")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_ator>), 200)]
         [ProducesResponseType(204)]
@@ -145,25 +130,46 @@ namespace WebApi.Controllers
             return Ok(vr);
         }
 
+        //Pagged Search
+        [HttpGet("find-movie-count-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
+        [ProducesResponseType(typeof(List<_vw_mc_ator>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult FindMovieCountPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.count, bool isAscending = true)
+        {
+            return new OkObjectResult(_business.FindMovieCountPagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+        }
+
+
         [Route("[action]/{id}/{order}")]
-        [Route("[action]/{id}")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_filme_por_ator>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieBy(long id, int order = (int)enMovieCount.title)
+        public IActionResult GetMovieById(long id, int order = (int)enMovieCount.title)
         {
-            var ret = _business.FindMovieBy(id, (enMovieCount)order);
+            var ret = _business.FindMovieById(id, (enMovieCount)order);
             if (ret == null) return NotFound();
             ViewResponseMovieBy<_vw_mc_filme_por_ator> vr = new ViewResponseMovieBy<_vw_mc_filme_por_ator>();
             vr.server_response = ret;
             return Ok(vr);
         }
 
+        //Pagged Search
+        [HttpGet("find-movie-by-id-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_por_ator>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult FindMovieByIdPagedSearch([FromQuery] long id, int pageSize, int page, int order = (int)enMovieCount.title, bool isAscending = true)
+        {
+            return new OkObjectResult(_business.FindMovieByIdPagedSearch(id, pageSize, page, (enMovieCount)order, isAscending));
+        }
+
 
         [Route("[action]/{name}/{order}/{isAscending}")]
-        [Route("[action]/{name}")]
         [HttpGet]
         [ProducesResponseType(typeof(List<_vw_mc_filme_por_ator>), 200)]
         [ProducesResponseType(204)]
@@ -177,5 +183,17 @@ namespace WebApi.Controllers
             vr.server_response = ret;
             return Ok(vr);
         }
+
+        //Pagged Search
+        [HttpGet("find-movie-by-name-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
+        [ProducesResponseType(typeof(List<_vw_mc_filme_por_ator>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult FindMovieByNamePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.title, bool isAscending = true)
+        {
+            return new OkObjectResult(_business.FindMovieByNamePagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using WebApi.Model.Context;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Repository.Implementattions
 {

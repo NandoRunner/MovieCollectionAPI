@@ -1,5 +1,6 @@
 ﻿using WebApi.Model;
 using System.Collections.Generic;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Repository
 {

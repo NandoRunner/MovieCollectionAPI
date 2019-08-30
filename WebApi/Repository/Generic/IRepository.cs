@@ -20,5 +20,6 @@ namespace WebApi.Repository.Generic
 
         List<T> FindWithPagedSearch(string query);
         int GetCount(string query);
+
     }
 }

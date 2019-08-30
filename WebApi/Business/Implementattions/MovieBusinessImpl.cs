@@ -7,6 +7,8 @@ using System.Linq;
 using WebApi.Repository;
 using Tapioca.HATEOAS.Utils;
 using System.Data.SqlClient;
+using FAndradeTecInfo.Utils;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Business.Implementattions
 {
@@ -53,11 +55,14 @@ namespace WebApi.Business.Implementattions
 
         public PagedSearchDTO<Movie> FindWithPagedSearch(string name, int pageSize, int page, bool isAscending)
         {
+            var filters = new Dictionary<string, object>() { { "titulo", name } };
+
             var sort = isAscending ? "asc" : "desc";
+            var sortFields = string.Empty;
 
-            var query = MontarQuery("movies", name, sort, pageSize, page, enMovieCount.title);
+            var query = SQL.BuildSelectQuery("movies", ref filters, sort, pageSize, page, enMovieCount.title, ref sortFields);
 
-            var countQuery = MontarCountQuery("movies", name);
+            var countQuery = SQL.BuildCountQuery("movies", ref filters);
 
             var pagedResults = _repository.FindWithPagedSearch(query);
 
@@ -73,19 +78,19 @@ namespace WebApi.Business.Implementattions
             };
         }
 
-
-
         public PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
         {
+            var filters = new Dictionary<string, object>() { { "titulo", name } };
+
             var sort = isAscending ? "asc" : "desc";
+            var sortFields = string.Empty;
 
-            var query = MontarQuery("vw_mc_filme_visto", name, sort, pageSize, page, order);
+            var query = SQL.BuildSelectQuery("vw_mc_filme_visto", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MontarCountQuery("vw_mc_filme_visto", name);
+            var countQuery = SQL.BuildCountQuery("vw_mc_filme_visto", ref filters);
 
             var pagedResults = _repository.FindWatchedPagedSearch(query);
 
-            //int totalResults = _repository.GetCountWatched();
             int totalResults = _repository.GetCount(countQuery);
 
             return new PagedSearchDTO<_vw_mc_filme_visto>
@@ -100,15 +105,17 @@ namespace WebApi.Business.Implementattions
 
         public PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
         {
+            var filters = new Dictionary<string, object>() { { "titulo", name } };
+
             var sort = isAscending ? "asc" : "desc";
+            var sortFields = string.Empty;
 
-            var query = MontarQuery("vw_mc_filme_ver", name, sort, pageSize, page, order);
+            var query = SQL.BuildSelectQuery("vw_mc_filme_ver", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MontarCountQuery("vw_mc_filme_ver", name);
+            var countQuery = SQL.BuildCountQuery("vw_mc_filme_ver", ref filters);
 
             var pagedResults = _repository.FindAvailablePagedSearch(query);
 
-            //int totalResults = _repository.GetCountAvailable();
             int totalResults = _repository.GetCount(countQuery);
 
             return new PagedSearchDTO<_vw_mc_filme_ver>
@@ -121,33 +128,8 @@ namespace WebApi.Business.Implementattions
             };
         }
 
-        private string MontarQuery(string tabela, string name, string sortDirection, int pageSize, int page, enMovieCount order)
-        {
-            //page = page > 0 ? page - 1 : 0;
 
-            page = page < 1 ? 0 : (page - 1) * pageSize;
 
-            string query = $"select * from {tabela} p where 1 = 1 ";
-            if (!string.IsNullOrEmpty(name)) query = query + $" and p.titulo like '%{name}%'";
 
-            string orderField;
-
-            if (order == enMovieCount.rating)
-                orderField = "p.rating";
-            else if (order == enMovieCount.periodo)
-                orderField = "p.periodo";
-            else
-                orderField = "p.titulo";
-
-            return query + $" order by {orderField} {sortDirection} limit {pageSize} offset {page}";
-        }
-
-        private string MontarCountQuery(string tabela, string name)
-        {
-            string countQuery = $"select count(*) from {tabela} p where 1 = 1 ";
-            if (!string.IsNullOrEmpty(name)) countQuery = countQuery + $" and p.titulo like '%{name}%'";
-
-            return countQuery;
-        }
     }
 }

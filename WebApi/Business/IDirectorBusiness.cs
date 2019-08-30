@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FAndradeTecInfo.Utils.Model;
+using System.Collections.Generic;
 using WebApi.Data.VO;
 using WebApi.Model;
 

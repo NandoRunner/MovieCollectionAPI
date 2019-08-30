@@ -4,6 +4,7 @@ using WebApi.Model;
 using WebApi.Business;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Controllers
 {

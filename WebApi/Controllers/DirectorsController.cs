@@ -5,6 +5,7 @@ using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
 using Microsoft.AspNetCore.Authorization;
+using FAndradeTecInfo.Utils.Model;
 
 namespace WebApi.Controllers
 {
