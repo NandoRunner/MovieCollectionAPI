@@ -126,6 +126,9 @@ namespace WebApi
             services.AddScoped<IGenreBusiness, GenreBusinessImpl>();
             services.AddScoped<IDirectorBusiness, DirectorBusinessImpl>();
 
+            services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
+            services.AddScoped<IFileBusiness, FileBusinessImpl>();
+
 			//Dependency Injection of GenericRepository
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IRepositoryInter<>), typeof(GenericRepositoryInter<>));
