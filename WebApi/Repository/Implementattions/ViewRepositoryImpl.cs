@@ -46,9 +46,9 @@ namespace WebApi.Repository.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = SQL.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = MyQuery.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = SQL.BuildCountQuery(view, ref filters);
+            var countQuery = MyQuery.BuildCountQuery(view, filters);
 
             var pagedResults = dataset.FromSql<T>(query).ToList();
 
@@ -133,9 +133,9 @@ namespace WebApi.Repository.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = SQL.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = MyQuery.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = SQL.BuildCountQuery(view, ref filters);
+            var countQuery = MyQuery.BuildCountQuery(view, filters);
 
             var pagedResults = dataset.FromSql<T>(query).ToList();
 

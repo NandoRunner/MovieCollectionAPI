@@ -60,9 +60,9 @@ namespace WebApi.Business.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = SQL.BuildSelectQuery("movies", ref filters, sort, pageSize, page, enMovieCount.title, ref sortFields);
+            var query = MyQuery.BuildSelectQuery("movies", ref filters, sort, pageSize, page, enMovieCount.title, ref sortFields);
 
-            var countQuery = SQL.BuildCountQuery("movies", ref filters);
+            var countQuery = MyQuery.BuildCountQuery("movies", filters);
 
             var pagedResults = _repository.FindWithPagedSearch(query);
 
@@ -85,9 +85,9 @@ namespace WebApi.Business.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = SQL.BuildSelectQuery("vw_mc_filme_visto", ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = MyQuery.BuildSelectQuery("vw_mc_filme_visto", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = SQL.BuildCountQuery("vw_mc_filme_visto", ref filters);
+            var countQuery = MyQuery.BuildCountQuery("vw_mc_filme_visto", filters);
 
             var pagedResults = _repository.FindWatchedPagedSearch(query);
 
@@ -110,9 +110,9 @@ namespace WebApi.Business.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = SQL.BuildSelectQuery("vw_mc_filme_ver", ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = MyQuery.BuildSelectQuery("vw_mc_filme_ver", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = SQL.BuildCountQuery("vw_mc_filme_ver", ref filters);
+            var countQuery = MyQuery.BuildCountQuery("vw_mc_filme_ver", filters);
 
             var pagedResults = _repository.FindAvailablePagedSearch(query);
 
