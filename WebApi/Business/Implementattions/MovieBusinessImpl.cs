@@ -7,8 +7,8 @@ using System.Linq;
 using WebApi.Repository;
 using Tapioca.HATEOAS.Utils;
 using System.Data.SqlClient;
-using FAndradeTecInfo.Utils;
 using FAndradeTecInfo.Utils.Model;
+using FAndradeTecInfo.Utils;
 
 namespace WebApi.Business.Implementattions
 {

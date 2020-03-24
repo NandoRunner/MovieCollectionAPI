@@ -1,6 +1,6 @@
-﻿using FAndradeTecInfo.Utils.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WebApi.Data.VO;
+using FAndradeTecInfo.Utils.Model;
 using WebApi.Model;
 
 namespace WebApi.Business

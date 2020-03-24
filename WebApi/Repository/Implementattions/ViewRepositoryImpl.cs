@@ -50,7 +50,7 @@ namespace WebApi.Repository.Implementattions
 
             var countQuery = MyQuery.BuildCountQuery(view, filters);
 
-            var pagedResults = dataset.FromSql<T>(query).ToList();
+            var pagedResults = dataset.FromSqlRaw<T>(query).ToList();
 
             int totalResults = GetCount(countQuery);
 
@@ -137,7 +137,7 @@ namespace WebApi.Repository.Implementattions
 
             var countQuery = MyQuery.BuildCountQuery(view, filters);
 
-            var pagedResults = dataset.FromSql<T>(query).ToList();
+            var pagedResults = dataset.FromSqlRaw<T>(query).ToList();
 
             int totalResults = GetCount(countQuery);
 

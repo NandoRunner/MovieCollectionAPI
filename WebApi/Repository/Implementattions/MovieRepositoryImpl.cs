@@ -99,7 +99,7 @@ namespace WebApi.Repository.Implementattions
 
         public List<Movie> FindWithPagedSearch(string query)
         {
-            return dataset.FromSql<Movie>(query).ToList();
+            return dataset.FromSqlRaw<Movie>(query).ToList();
         }
 
         public int GetCount(string query)
@@ -121,12 +121,12 @@ namespace WebApi.Repository.Implementattions
 
         public List<_vw_mc_filme_visto> FindWatchedPagedSearch(string query)
         {
-            return ds2.FromSql<_vw_mc_filme_visto>(query).ToList();
+            return ds2.FromSqlRaw<_vw_mc_filme_visto>(query).ToList();
         }
 
         public List<_vw_mc_filme_ver> FindAvailablePagedSearch(string query)
         {
-            return ds3.FromSql<_vw_mc_filme_ver>(query).ToList();
+            return ds3.FromSqlRaw<_vw_mc_filme_ver>(query).ToList();
         }
     }
 }

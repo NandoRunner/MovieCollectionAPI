@@ -6,7 +6,6 @@ using WebApi.Data.Converters;
 using WebApi.Data.VO;
 using Tapioca.HATEOAS.Utils;
 using FAndradeTecInfo.Utils.Model;
-using FAndradeTecInfo.Utils;
 
 namespace WebApi.Business.Implementattions
 {

@@ -21,16 +21,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Security.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
+
 
 namespace WebApi
 {
     public class Startup
     {
-        private readonly ILogger _logger;
+        private readonly Microsoft.Extensions.Logging.ILogger _logger;
         public IConfiguration _configuration { get; }
-        public IHostingEnvironment _environment { get; }
+        public IWebHostEnvironment _environment { get; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger<Startup> logger)
         {
             _configuration = configuration;
             _environment = environment;
@@ -40,7 +43,13 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			//Connection to database
+			// CORS 
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+            
+            //Connection to database
             var strconn = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<MySQLContext>(options => options.UseMySql(strconn));
 
@@ -96,6 +105,8 @@ namespace WebApi
                 //options.RespectBrowserAcceptHeader = true;
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
                 options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
+                options.EnableEndpointRouting = false;
+
             })
             .AddXmlSerializerFormatters();
 
@@ -115,7 +126,7 @@ namespace WebApi
             services.AddSwaggerGen( c =>
             {
                 c.SwaggerDoc("v1",
-                    new Info
+                    new OpenApiInfo
                     {
                         Title = "Movie Collection",
                         Version = "v1"
@@ -148,9 +159,9 @@ namespace WebApi
                 {
                     //var devconn = _configuration["MySqlConnection:MySqlConnectionString"];
                     var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(strconn);
-                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
+                    var evolve = new Evolve.Evolve(evolveConnection, msg => _logger.LogInformation(msg))
                     {
-                        Locations = new List<string> { "fandradetecinfo.utils/db/migrations" },
+                        Locations = new List<string> { "db/migrations" },
                         IsEraseDisabled = true,
                     };
 
@@ -165,17 +176,20 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(_configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            LoggerFactory.Create(builder =>
+            {
+                builder.AddConfiguration(_configuration.GetSection("Logging"));
+                builder.AddDebug();
+            });
 
             //Enable Swagger
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
-#if DEBUG
+#if !DEBUG
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
 #else
                    // To deploy on IIS
