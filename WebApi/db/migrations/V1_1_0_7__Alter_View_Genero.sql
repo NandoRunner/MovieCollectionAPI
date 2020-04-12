@@ -1,4 +1,4 @@
-CREATE VIEW `vw_mc_genero` AS
+CREATE OR REPLACE VIEW `vw_mc_genero` AS
     SELECT 
         `mc_gen_genero`.`gen_nome` AS `nome`, COUNT(0) AS `filmes`
     FROM

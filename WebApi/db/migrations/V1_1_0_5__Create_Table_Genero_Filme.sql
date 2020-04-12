@@ -1,4 +1,4 @@
-CREATE TABLE `mc_gf_genero_filme` (
+CREATE TABLE IF NOT EXISTS `mc_gf_genero_filme` (
   `gf_fil_filme_id` INT NOT NULL,
   `gf_gen_genero_id` INT NOT NULL,
   PRIMARY KEY (`gf_fil_filme_id`, `gf_gen_genero_id`),

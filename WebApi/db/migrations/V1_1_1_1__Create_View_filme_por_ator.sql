@@ -1,4 +1,4 @@
-CREATE VIEW `vw_mc_filme_por_ator` AS
+CREATE OR REPLACE VIEW `vw_mc_filme_por_ator` AS
 
 SELECT `mc_ato_ator`.`ato_ator_id` AS `id`
 	,`mc_ato_ator`.`ato_nome` AS `nome`

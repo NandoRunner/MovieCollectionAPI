@@ -1,4 +1,4 @@
-CREATE VIEW `vw_mc_diretor` AS
+CREATE OR REPLACE VIEW `vw_mc_diretor` AS
     SELECT 
         `mc_dir_diretor`.`dir_nome` AS `nome`,
         COUNT(0) AS `filmes`

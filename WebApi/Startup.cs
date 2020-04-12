@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Tapioca.HATEOAS;
 using WebApi.Business;
 using WebApi.Business.Implementattions;
-using WebApi.Repository;
-using WebApi.Repository.Implementattions;
-using WebApi.Model.Context;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Repository.Generic;
-using Microsoft.Net.Http.Headers;
-using Tapioca.HATEOAS;
 using WebApi.HyperMedia;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.AspNetCore.Rewrite;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using WebApi.Model.Context;
+using WebApi.Repository;
+using WebApi.Repository.Generic;
+using WebApi.Repository.Implementattions;
 using WebApi.Security.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Hosting;
 
 
 namespace WebApi
@@ -43,12 +43,12 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			// CORS 
+            // CORS 
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
-            
+
             //Connection to database
             var strconn = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<MySQLContext>(options => options.UseMySql(strconn));
@@ -123,15 +123,16 @@ namespace WebApi
             services.AddApiVersioning(option => option.ReportApiVersions = true);
 
             //Add Swagger Service
-            services.AddSwaggerGen( c =>
-            {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = "Movie Collection",
-                        Version = "v1"
-                    });
-            });
+            services.AddSwaggerGen(c =>
+           {
+               c.SwaggerDoc("v1",
+                   new OpenApiInfo
+                   {
+                       Title = "Movie Collection",
+                       Version = "v1"
+                   });
+           });
+
             //Dependency Injection
             services.AddScoped<IActorBusiness, ActorBusinessImpl>();
             services.AddScoped<IGenreBusiness, GenreBusinessImpl>();
@@ -140,7 +141,7 @@ namespace WebApi
             services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
             services.AddScoped<IFileBusiness, FileBusinessImpl>();
 
-			//Dependency Injection of GenericRepository
+            //Dependency Injection of GenericRepository
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IRepositoryInter<>), typeof(GenericRepositoryInter<>));
 
@@ -162,7 +163,12 @@ namespace WebApi
                     var evolve = new Evolve.Evolve(evolveConnection, msg => _logger.LogInformation(msg))
                     {
                         Locations = new List<string> { "db/migrations" },
+                        MetadataTableName = "changelog_imdb",
                         IsEraseDisabled = true,
+                        Encoding = Encoding.UTF8
+                        //todo: Encoding not working for inserts
+                        //ALTER TABLE database.table MODIFY COLUMN col VARCHAR(255)
+                        //CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
                     };
 
                     evolve.Migrate();
@@ -192,7 +198,7 @@ namespace WebApi
 #if !DEBUG
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
 #else
-                   // To deploy on IIS
+                // To deploy on IIS
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1");
 #endif
             });
@@ -204,7 +210,7 @@ namespace WebApi
 
             //Adding map routing
             app.UseMvc(routes =>
-			{
+            {
                 routes.MapRoute(
                     name: "DefaultApi",
                     template: "{controller=Values}/{id?}");
