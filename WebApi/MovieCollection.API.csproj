@@ -54,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\_Resource\FandradeTecInfoUtils\FAndradeTecInfo.Utils.csproj" />
+    <ProjectReference Include="..\..\FandradeTecInfoUtils\FAndradeTI.Util.Database\FAndradeTI.Util.Database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,50 +73,74 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="db\migrations\V1_1_0_1__Create_Table_Ator.sql">
+    <None Update="db\dataset\V1_1_1_7__movie_mc_ato_ator.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_1_8__movie_mc_dir_diretor.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_1_9__movie_mc_fil_filme.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_2_0__movie_mc_gf_genero_filme.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_2_1__movie_mc_af_ator_filme.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_2_2__update_special_characters.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="db\dataset\V1_1_2_3__update_special_characters_director.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="db\migrations\V1_1_0_1__Create_Table_Ator.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_2__Create_Table_Diretor.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_3__Create_Table_Genero.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_4__Create_Table_Filme.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_5__Create_Table_Genero_Filme.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_6__Create_Table_Ator_Filme.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_7__Alter_View_Genero.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_8__Alter_View_Ator.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_0_9__Alter_View_Diretor.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_0__Create_table_web_users.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_1__Create_View_filme_por_ator.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_2__Create_View_filme_por_diretor.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_3__Create_View_filme_por_genero.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_4__FileRenamer_Create_Command .sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_1_5__Insert_Genero.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="db\migrations\V1_1_1_6__Insert_Genero.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\migrations\V1_1_1_5__Alter_Genero.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   

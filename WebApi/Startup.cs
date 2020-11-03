@@ -24,20 +24,19 @@ using WebApi.Repository.Generic;
 using WebApi.Repository.Implementattions;
 using WebApi.Security.Configuration;
 
-
 namespace WebApi
 {
     public class Startup
     {
-        private readonly Microsoft.Extensions.Logging.ILogger _logger;
-        public IConfiguration _configuration { get; }
-        public IWebHostEnvironment _environment { get; }
+        private readonly Microsoft.Extensions.Logging.ILogger logger;
+        public IConfiguration configuration { get; }
+        public IWebHostEnvironment environment { get; }
 
         public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger<Startup> logger)
         {
-            _configuration = configuration;
-            _environment = environment;
-            _logger = logger;
+            this.configuration = configuration;
+            this.environment = environment;
+            this.logger = logger;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -50,7 +49,11 @@ namespace WebApi
             });
 
             //Connection to database
-            var strconn = _configuration["MySqlConnection:MySqlConnectionString"];
+#if DEBUG
+            var strconn = this.configuration["MySqlConnection:Local"];
+#else
+            var strconn = this.configuration["MySqlConnection:AzureInApp"];
+#endif
             services.AddDbContext<MySQLContext>(options => options.UseMySql(strconn));
 
             //Adding Migrations Support
@@ -62,7 +65,7 @@ namespace WebApi
             var tokenConfigurations = new TokenConfiguration();
 
             new ConfigureFromConfigurationOptions<TokenConfiguration>(
-                _configuration.GetSection("TokenConfigurations")
+                configuration.GetSection("TokenConfigurations")
             )
             .Configure(tokenConfigurations);
 
@@ -154,31 +157,31 @@ namespace WebApi
 
         private void ExecuteMigrations(string strconn)
         {
-            if (_environment.IsDevelopment())
+            //if (this.environment.IsDevelopment())
+            //{
+            try
             {
-                try
+                using (var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(strconn))
                 {
-                    //var devconn = _configuration["MySqlConnection:MySqlConnectionString"];
-                    var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(strconn);
-                    var evolve = new Evolve.Evolve(evolveConnection, msg => _logger.LogInformation(msg))
+                    var evolve = new Evolve.Evolve(evolveConnection, msg => this.logger.LogInformation(msg))
                     {
-                        Locations = new List<string> { "db/migrations" },
-                        MetadataTableName = "changelog_imdb",
+                        Locations = new List<string> { "db/migrations", "db/dataset" },
                         IsEraseDisabled = true,
-                        Encoding = Encoding.UTF8
+                        Encoding = Encoding.UTF8,
+                        MetadataTableSchema = "movie"
                         //todo: Encoding not working for inserts
                         //ALTER TABLE database.table MODIFY COLUMN col VARCHAR(255)
                         //CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
                     };
-
                     evolve.Migrate();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogCritical("Database migration failed.", ex);
-                    throw;
-                }
+                };
             }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical("Database migration failed.", ex);
+                throw;
+            }
+            //}
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -186,7 +189,7 @@ namespace WebApi
         {
             LoggerFactory.Create(builder =>
             {
-                builder.AddConfiguration(_configuration.GetSection("Logging"));
+                builder.AddConfiguration(this.configuration.GetSection("Logging"));
                 builder.AddDebug();
             });
 
@@ -195,12 +198,20 @@ namespace WebApi
 
             app.UseSwaggerUI(c =>
             {
-#if !DEBUG
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
+
+                if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "Development"))
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1 (DEBUG)");
+                }
+                else
+                {
+#if DEBUG
+                    c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1 (BETA)");
 #else
-                // To deploy on IIS
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1");
 #endif
+
+                }
             });
 
             //Starting our API in Swagger page

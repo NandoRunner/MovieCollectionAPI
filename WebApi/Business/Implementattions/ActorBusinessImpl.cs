@@ -5,7 +5,7 @@ using WebApi.Repository.Generic;
 using WebApi.Data.Converters;
 using WebApi.Data.VO;
 using Tapioca.HATEOAS.Utils;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Business.Implementattions
 {
@@ -67,35 +67,35 @@ namespace WebApi.Business.Implementattions
             _repository.Delete(id);
         }
 
-        public List<_vw_mc_ator> FindMovieCount(enMovieCount order, bool isAscending)
+        public List<_vw_mc_ator> FindMovieCount(MovieField order, bool isAscending)
         {
             return _vrep.FindMovieCount(order, isAscending);
         }
 
-        public List<_vw_mc_filme_por_ator> FindMovieById(long id, enMovieCount order)
+        public List<_vw_mc_filme_por_ator> FindMovieById(long id, MovieField order)
         {
             return _vmbrep.FindMovieById(id, order);
         }
-        public List<_vw_mc_filme_por_ator> FindMovieByName(string name, enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_por_ator> FindMovieByName(string name, MovieField order, bool isAscending)
         {
             return _vmbrep.FindMovieByName(name, order, isAscending);
         }
 
-        public PagedSearchDTO<_vw_mc_ator> FindMovieCountPagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<_vw_mc_ator> FindMovieCountPagedSearch(string name, int pageSize, int page, MovieField order, bool isAscending)
         {
             var filters = new Dictionary<string, object>() {{ "nome", name } };
 
             return _vrep.FindPagedSearch("vw_mc_ator", ref filters, pageSize, page, order, isAscending);
         }
 
-        public PagedSearchDTO<_vw_mc_filme_por_ator> FindMovieByIdPagedSearch(long id, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<_vw_mc_filme_por_ator> FindMovieByIdPagedSearch(long id, int pageSize, int page, MovieField order, bool isAscending)
         {
             var filters = new Dictionary<string, object>() { { "id", id.ToString() } };
 
             return _vmbrep.FindPagedSearch("vw_mc_filme_por_ator", ref filters, pageSize, page, order, isAscending);
         }
 
-        public PagedSearchDTO<_vw_mc_filme_por_ator> FindMovieByNamePagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<_vw_mc_filme_por_ator> FindMovieByNamePagedSearch(string name, int pageSize, int page, MovieField order, bool isAscending)
         {
             var filters = new Dictionary<string, object>() { { "nome", name } };
 

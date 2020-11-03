@@ -57,6 +57,11 @@ namespace WebApi.Model.Context
             modelBuilder.Entity<_vw_mc_filme_por_genero>()
                 .HasKey(c => new { c.id, c.filme_id });
 
+            modelBuilder.Entity<Movie>()
+                .Property<long?>("id").HasColumnName("fil_filme_id");
+            modelBuilder.Entity<Movie>()
+                .Property<string>("titulo").HasColumnName("fil_titulo");
+
         }
     }
 }

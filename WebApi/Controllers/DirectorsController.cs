@@ -5,7 +5,7 @@ using WebApi.Data.VO;
 using System.Collections.Generic;
 using WebApi.Model;
 using Microsoft.AspNetCore.Authorization;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Controllers
 {
@@ -122,9 +122,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieCount(int order = (int)enMovieCount.count, bool isAscending = true)
+        public IActionResult GetMovieCount(int order = (int)MovieField.count, bool isAscending = true)
         {
-            var ret = _business.FindMovieCount((enMovieCount)order, isAscending);
+            var ret = _business.FindMovieCount((MovieField)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponse<_vw_mc_diretor> vr = new ViewResponse<_vw_mc_diretor>();
             vr.server_response = ret;
@@ -138,9 +138,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieBy(long id, int order = (int)enMovieCount.title)
+        public IActionResult GetMovieBy(long id, int order = (int)MovieField.title)
         {
-            var ret = _business.FindMovieBy(id, (enMovieCount)order);
+            var ret = _business.FindMovieBy(id, (MovieField)order);
             if (ret == null) return NotFound();
             ViewResponseMovieBy<_vw_mc_filme_por_diretor> vr = new ViewResponseMovieBy<_vw_mc_filme_por_diretor>();
             vr.server_response = ret;
@@ -155,9 +155,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetMovieByName(string name, int order = (int)enMovieCount.title, bool isAscending = true)
+        public IActionResult GetMovieByName(string name, int order = (int)MovieField.title, bool isAscending = true)
         {
-            var ret = _business.FindMovieByName(name, (enMovieCount)order, isAscending);
+            var ret = _business.FindMovieByName(name, (MovieField)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovieBy<_vw_mc_filme_por_diretor> vr = new ViewResponseMovieBy<_vw_mc_filme_por_diretor>();
             vr.server_response = ret;

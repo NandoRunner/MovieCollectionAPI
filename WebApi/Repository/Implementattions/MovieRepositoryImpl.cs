@@ -5,7 +5,7 @@ using WebApi.Model.Context;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Repository.Implementattions
 {
@@ -46,24 +46,24 @@ namespace WebApi.Repository.Implementattions
         // Método responsável por retornar uma pessoa
         public Movie FindById(long id)
         {
-            return _context.Movies.SingleOrDefault(p => p.Id.Equals(id));
+            return dataset.SingleOrDefault(p => p.id.Equals(id));
         }
 
         public List<Movie> FindByName(string name)
         {
-            return _context.Movies.Where(a => a.titulo.Contains(name)).OrderBy(a => a.titulo).ToList();
+            return dataset.Where(a => a.titulo.Contains(name)).OrderBy(a => a.titulo).ToList();
         }
 
 
         // Método responsável por retornar todas as pessoas
         public List<Movie> FindAll()
         {
-            return _context.Movies.OrderBy(a => a.titulo).ToList();
+            return dataset.OrderBy(a => a.titulo).ToList();
         }
 
-        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_visto> FindWatched(MovieField order, bool isAscending)
         {
-            if (order == enMovieCount.periodo)
+            if (order == MovieField.period)
             {
                 if (isAscending)
                     return _context.vw_mc_filme_visto.OrderBy(p => p.periodo).ToList();
@@ -79,9 +79,9 @@ namespace WebApi.Repository.Implementattions
             }
         }
 
-        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_ver> FindAvailable(MovieField order, bool isAscending)
         {
-            if (order == enMovieCount.rating)
+            if (order == MovieField.rating)
             {
                 if (isAscending)
                     return _context.vw_mc_filme_ver.OrderBy(p => p.rating).ToList();

@@ -4,7 +4,7 @@ using WebApi.Model;
 using WebApi.Business;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Controllers
 {
@@ -69,9 +69,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetWatched(int order = (int)enMovieCount.periodo, bool isAscending = true)
+        public IActionResult GetWatched(int order = (int)MovieField.period, bool isAscending = true)
         {
-            var ret = _business.FindWatched((enMovieCount)order, isAscending);
+            var ret = _business.FindWatched((MovieField)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_visto> vr = new ViewResponseMovie<_vw_mc_filme_visto>
             {
@@ -87,9 +87,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAvailable(int order = (int)enMovieCount.rating, bool isAscending = true)
+        public IActionResult GetAvailable(int order = (int)MovieField.rating, bool isAscending = true)
         {
-            var ret = _business.FindAvailable((enMovieCount)order, isAscending);
+            var ret = _business.FindAvailable((MovieField)order, isAscending);
             if (ret == null) return NotFound();
             ViewResponseMovie<_vw_mc_filme_ver> vr = new ViewResponseMovie<_vw_mc_filme_ver>
             {
@@ -118,9 +118,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.periodo, bool isAscending = true)
+        public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.period, bool isAscending = true)
         {
-            return new OkObjectResult(_business.FindWatchedPagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+            return new OkObjectResult(_business.FindWatchedPagedSearch(name, pageSize, page, (MovieField)order, isAscending));
         }
 
         [HttpGet("find-available-paged-search/{pageSize}/{page}/{order}/{isAscending}")]
@@ -128,9 +128,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)enMovieCount.rating, bool isAscending = false)
+        public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.rating, bool isAscending = false)
         {
-            return new OkObjectResult(_business.FindAvailablePagedSearch(name, pageSize, page, (enMovieCount)order, isAscending));
+            return new OkObjectResult(_business.FindAvailablePagedSearch(name, pageSize, page, (MovieField)order, isAscending));
         }
 
         //Mapeia as requisições POST para http://localhost:{porta}/api/movie/

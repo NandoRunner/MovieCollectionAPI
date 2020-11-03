@@ -4,7 +4,7 @@ using WebApi.Repository;
 using WebApi.Repository.Generic;
 using WebApi.Data.Converters;
 using WebApi.Data.VO;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Business.Implementattions
 {
@@ -66,17 +66,17 @@ namespace WebApi.Business.Implementattions
             _repository.Delete(id);
         }
 
-        public List<_vw_mc_genero> FindMovieCount(enMovieCount order, bool isAscending)
+        public List<_vw_mc_genero> FindMovieCount(MovieField order, bool isAscending)
         {
             return _vrep.FindMovieCount(order, isAscending);
         }
 
-        public List<_vw_mc_filme_por_genero> FindMovieBy(long id, enMovieCount order)
+        public List<_vw_mc_filme_por_genero> FindMovieBy(long id, MovieField order)
         {
             return _vmbrep.FindMovieById(id, order);
         }
 
-        public List<_vw_mc_filme_por_genero> FindMovieByName(string name, enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_por_genero> FindMovieByName(string name, MovieField order, bool isAscending)
         {
             return _vmbrep.FindMovieByName(name, order, isAscending);
         }

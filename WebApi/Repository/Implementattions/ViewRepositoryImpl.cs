@@ -6,9 +6,9 @@ using System;
 using System.Linq;
 using WebApi.Model.Base;
 using Microsoft.EntityFrameworkCore;
-using FAndradeTecInfo.Utils.Model;
+using FAndradeTI.Util.Database.Model;
 using Tapioca.HATEOAS.Utils;
-using FAndradeTecInfo.Utils;
+using FAndradeTI.Util.Database;
 
 namespace WebApi.Repository.Implementattions
 {
@@ -23,9 +23,9 @@ namespace WebApi.Repository.Implementattions
             dataset = _context.Set<T>();
         }
         
-        public List<T> FindMovieCount(enMovieCount order, bool isAscending)
+        public List<T> FindMovieCount(MovieField order, bool isAscending)
         {
-            if (order == enMovieCount.name)
+            if (order == MovieField.name)
             {
                 if (isAscending)
                     return dataset.OrderBy(p => p.nome).ToList();
@@ -41,14 +41,14 @@ namespace WebApi.Repository.Implementattions
             }
         }
 
-        public PagedSearchDTO<T> FindPagedSearch(string view, ref Dictionary<string, object> filters, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<T> FindPagedSearch(string view, ref Dictionary<string, object> filters, int pageSize, int page, MovieField order, bool isAscending)
         {
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = MyQuery.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = Query.BuildSelect(view, ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MyQuery.BuildCountQuery(view, filters);
+            var countQuery = Query.BuildCount(view, filters);
 
             var pagedResults = dataset.FromSqlRaw<T>(query).ToList();
 
@@ -96,9 +96,9 @@ namespace WebApi.Repository.Implementattions
             dataset = _context.Set<T>();
         }
 
-        public List<T> FindMovieById(long id, enMovieCount order)
+        public List<T> FindMovieById(long id, MovieField order)
         {
-            if (order == enMovieCount.name)
+            if (order == MovieField.name)
             {
                 return dataset.Where(a => a.id == id).OrderBy(p => p.nome).ToList();
             }
@@ -108,11 +108,11 @@ namespace WebApi.Repository.Implementattions
             }
         }
 
-        public List<T> FindMovieByName(string name, enMovieCount order, bool isAscending)
+        public List<T> FindMovieByName(string name, MovieField order, bool isAscending)
         {
             name = name.Replace("&nbsp;", " ");
 
-            if (order == enMovieCount.title)
+            if (order == MovieField.title)
             {
                 if (isAscending)
                     return dataset.Where(a => a.nome == name).OrderBy(p => p.titulo).ToList();
@@ -128,14 +128,14 @@ namespace WebApi.Repository.Implementattions
             }
         }
 
-        public PagedSearchDTO<T> FindPagedSearch(string view, ref Dictionary<string, object> filters, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<T> FindPagedSearch(string view, ref Dictionary<string, object> filters, int pageSize, int page, MovieField order, bool isAscending)
         {
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = MyQuery.BuildSelectQuery(view, ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = Query.BuildSelect(view, ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MyQuery.BuildCountQuery(view, filters);
+            var countQuery = Query.BuildCount(view, filters);
 
             var pagedResults = dataset.FromSqlRaw<T>(query).ToList();
 

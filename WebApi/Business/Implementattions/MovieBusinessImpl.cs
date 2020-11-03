@@ -7,8 +7,8 @@ using System.Linq;
 using WebApi.Repository;
 using Tapioca.HATEOAS.Utils;
 using System.Data.SqlClient;
-using FAndradeTecInfo.Utils.Model;
-using FAndradeTecInfo.Utils;
+using FAndradeTI.Util.Database.Model;
+using FAndradeTI.Util.Database;
 
 namespace WebApi.Business.Implementattions
 {
@@ -43,12 +43,12 @@ namespace WebApi.Business.Implementattions
 			return _repository.FindAll();
         }
 
-        public List<_vw_mc_filme_visto> FindWatched(enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_visto> FindWatched(MovieField order, bool isAscending)
         {
             return _repository.FindWatched(order, isAscending);
         }
 
-        public List<_vw_mc_filme_ver> FindAvailable(enMovieCount order, bool isAscending)
+        public List<_vw_mc_filme_ver> FindAvailable(MovieField order, bool isAscending)
         {
             return _repository.FindAvailable(order, isAscending);
         }
@@ -60,9 +60,9 @@ namespace WebApi.Business.Implementattions
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = MyQuery.BuildSelectQuery("movies", ref filters, sort, pageSize, page, enMovieCount.title, ref sortFields);
+            var query = Query.BuildSelect("movies", ref filters, sort, pageSize, page, MovieField.title, ref sortFields);
 
-            var countQuery = MyQuery.BuildCountQuery("movies", filters);
+            var countQuery = Query.BuildCount("movies", filters);
 
             var pagedResults = _repository.FindWithPagedSearch(query);
 
@@ -78,16 +78,16 @@ namespace WebApi.Business.Implementattions
             };
         }
 
-        public PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<_vw_mc_filme_visto> FindWatchedPagedSearch(string name, int pageSize, int page, MovieField order, bool isAscending)
         {
             var filters = new Dictionary<string, object>() { { "titulo", name } };
 
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = MyQuery.BuildSelectQuery("vw_mc_filme_visto", ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = Query.BuildSelect("vw_mc_filme_visto", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MyQuery.BuildCountQuery("vw_mc_filme_visto", filters);
+            var countQuery = Query.BuildCount("vw_mc_filme_visto", filters);
 
             var pagedResults = _repository.FindWatchedPagedSearch(query);
 
@@ -103,16 +103,16 @@ namespace WebApi.Business.Implementattions
             };
         }
 
-        public PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, int pageSize, int page, enMovieCount order, bool isAscending)
+        public PagedSearchDTO<_vw_mc_filme_ver> FindAvailablePagedSearch(string name, int pageSize, int page, MovieField order, bool isAscending)
         {
             var filters = new Dictionary<string, object>() { { "titulo", name } };
 
             var sort = isAscending ? "asc" : "desc";
             var sortFields = string.Empty;
 
-            var query = MyQuery.BuildSelectQuery("vw_mc_filme_ver", ref filters, sort, pageSize, page, order, ref sortFields);
+            var query = Query.BuildSelect("vw_mc_filme_ver", ref filters, sort, pageSize, page, order, ref sortFields);
 
-            var countQuery = MyQuery.BuildCountQuery("vw_mc_filme_ver", filters);
+            var countQuery = Query.BuildCount("vw_mc_filme_ver", filters);
 
             var pagedResults = _repository.FindAvailablePagedSearch(query);
 

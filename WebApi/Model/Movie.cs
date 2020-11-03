@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Model.Base;
 
 namespace WebApi.Model
 {
+    [Table("mc_fil_filme")]
     public class Movie
     {
-        public long? Id { get; set; }
+        public long? id { get; set; }
         public string titulo { get; set; }
         public string titulo_original { get; set; }
                
