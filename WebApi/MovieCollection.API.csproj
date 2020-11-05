@@ -11,10 +11,16 @@
     <Product>Movie Collection API</Product>
     <Authors>Fernando Andrade</Authors>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <Configurations>Debug;Release;Debug-IIS</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-IIS|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;DEBUG_IIS</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
@@ -141,6 +147,12 @@
     </None>
     <None Update="db\migrations\V1_1_1_5__Alter_Genero.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="db\migrations\V1_1_2_5__create_view_filmes_visto.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="db\migrations\V1_1_2_4__create_view_filmes_ver.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   

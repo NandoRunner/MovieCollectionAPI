@@ -199,19 +199,19 @@ namespace WebApi
             app.UseSwaggerUI(c =>
             {
 
-                if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "Development"))
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1 (DEBUG)");
-                }
-                else
-                {
-#if DEBUG
+                //if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "Development"))
+                //{
+                //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1 (DEBUG)");
+                //}
+                //else
+                //{
+#if DEBUG_IIS
                     c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1 (BETA)");
 #else
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
 #endif
 
-                }
+                //}
             });
 
             //Starting our API in Swagger page

@@ -10,18 +10,23 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug-IIS|Any CPU = Debug-IIS|Any CPU
 		NoOffice-Debug|Any CPU = NoOffice-Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Debug-IIS|Any CPU.ActiveCfg = Debug-IIS|Any CPU
+		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Debug-IIS|Any CPU.Build.0 = Debug-IIS|Any CPU
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.NoOffice-Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.NoOffice-Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A47DA07D-F808-4583-9CD4-7655EE0D6AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.Debug-IIS|Any CPU.ActiveCfg = Debug-IIS|Any CPU
+		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.Debug-IIS|Any CPU.Build.0 = Debug-IIS|Any CPU
 		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.NoOffice-Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.NoOffice-Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C128261-53C0-4A05-B519-3C2BA0B04A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
