@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `mc_fil_filme` (
   `fil_filme_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fil_titulo` varchar(90) NOT NULL,
-  `fil_titulo_original` varchar(90) DEFAULT NULL,
+  `fil_titulo` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `fil_titulo_original` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `fil_ano` int(11) NOT NULL,
   `fil_rating` decimal(2,1) NOT NULL,
   `fil_dir_diretor_id` int(11) NOT NULL,

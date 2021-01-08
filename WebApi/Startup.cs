@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System;
@@ -165,7 +166,8 @@ namespace WebApi
                 {
                     var evolve = new Evolve.Evolve(evolveConnection, msg => this.logger.LogInformation(msg))
                     {
-                        Locations = new List<string> { "db/migrations", "db/dataset" },
+                        //Locations = new List<string> { "db/migrations", "db/dataset" },
+                        Locations = new List<string> { "db/migrations" },
                         IsEraseDisabled = true,
                         Encoding = Encoding.UTF8,
                         MetadataTableSchema = "movie"
@@ -204,11 +206,16 @@ namespace WebApi
                 //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1 (DEBUG)");
                 //}
                 //else
+
                 //{
+
+                ApplicationEnvironment app = PlatformServices.Default.Application;
+                string packageVersion = app.ApplicationVersion;
+
 #if DEBUG_IIS
-                    c.SwaggerEndpoint("../swagger/v1/swagger.json", "Movie Collection API v1 (BETA)");
+                    c.SwaggerEndpoint("../swagger/v1/swagger.json", $"Movie Collection API v1 (BETA {packageVersion})");
 #else
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Collection API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Movie Collection API v1 ({packageVersion})");
 #endif
 
                 //}

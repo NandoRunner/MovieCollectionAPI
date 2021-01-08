@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <UserSecretsId>ddf76c05-49ec-40e4-8d8f-39cdbf6be114</UserSecretsId>
-    <AssemblyVersion>1.20.0.1</AssemblyVersion>
-    <Version>1.20.0.1</Version>
+    <AssemblyVersion>1.21.0.0</AssemblyVersion>
+    <Version>1.21.0.0</Version>
     <Copyright>Copyright © FAndrade TecInfo 2018-2020</Copyright>
     <Company>FAndrade TecInfo</Company>
     <Product>Movie Collection API</Product>
@@ -39,17 +39,18 @@
 
   <ItemGroup>
     <PackageReference Include="Evolve" Version="2.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="3.1.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="3.1.10" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
     <PackageReference Include="MySql.Data" Version="8.0.15" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
@@ -118,13 +119,13 @@
     <None Update="db\migrations\V1_1_0_6__Create_Table_Ator_Filme.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_0_7__Alter_View_Genero.sql">
+    <None Update="db\migrations\V1_1_0_7__Create_View_Genero.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_0_8__Alter_View_Ator.sql">
+    <None Update="db\migrations\V1_1_0_8__Create_View_Ator.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_0_9__Alter_View_Diretor.sql">
+    <None Update="db\migrations\V1_1_0_9__Create_View_Diretor.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="db\migrations\V1_1_1_0__Create_table_web_users.sql">
@@ -139,19 +140,13 @@
     <None Update="db\migrations\V1_1_1_3__Create_View_filme_por_genero.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_1_4__FileRenamer_Create_Command .sql">
+    <None Update="db\migrations\V1_1_1_4__Insert_Genero.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_1_6__Insert_Genero.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="db\migrations\V1_1_1_5__Alter_Genero.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="db\migrations\V1_1_2_5__create_view_filmes_visto.sql">
+    <None Update="db\migrations\V1_1_1_6__create_view_filmes_visto.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="db\migrations\V1_1_2_4__create_view_filmes_ver.sql">
+    <None Update="db\migrations\V1_1_1_5__create_view_filmes_ver.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
