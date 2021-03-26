@@ -9,7 +9,8 @@ using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Controllers
 {
-    [ApiVersion("1")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("[controller]/v{version:apiVersion}")]
     public class GenresController : Controller
     {

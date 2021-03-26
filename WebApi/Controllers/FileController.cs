@@ -7,7 +7,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApi.Controllers
 {
-    [ApiVersion("1")]
+    [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "v2")]
     [Route("[controller]/v{version:apiVersion}")]
     public class FileController : Controller
     {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [MapToApiVersion("2")]
         //[Authorize("Bearer")]
         public IActionResult GetPDFFile()
         {

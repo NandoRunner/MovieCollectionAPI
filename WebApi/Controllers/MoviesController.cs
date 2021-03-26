@@ -8,7 +8,8 @@ using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Controllers
 {
-    [ApiVersion("1")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("[controller]/v{version:apiVersion}")]
     public class MoviesController : Controller
     {
@@ -108,6 +109,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
         public IActionResult GetPagedSearch([FromQuery] string name, int pageSize, int page, bool isAscending = true)
         {
             return new OkObjectResult(_business.FindWithPagedSearch(name, pageSize, page, isAscending));
@@ -118,6 +120,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
         public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.period, bool isAscending = true)
         {
             return new OkObjectResult(_business.FindWatchedPagedSearch(name, pageSize, page, (MovieField)order, isAscending));
@@ -128,6 +131,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
         public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.rating, bool isAscending = false)
         {
             return new OkObjectResult(_business.FindAvailablePagedSearch(name, pageSize, page, (MovieField)order, isAscending));

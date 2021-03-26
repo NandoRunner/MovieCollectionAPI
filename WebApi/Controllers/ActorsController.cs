@@ -9,7 +9,8 @@ using FAndradeTI.Util.Database.Model;
 
 namespace WebApi.Controllers
 {
-    [ApiVersion("1")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("[controller]/v{version:apiVersion}")]
     public class ActorsController : Controller
     {
@@ -29,6 +30,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [MapToApiVersion("2.0")]
         public IActionResult Get()
         {
             return new OkObjectResult(_business.FindAll());
@@ -136,6 +138,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
         public IActionResult FindMovieCountPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.count, bool isAscending = true)
         {
             return new OkObjectResult(_business.FindMovieCountPagedSearch(name, pageSize, page, (MovieField)order, isAscending));
@@ -163,6 +166,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
         public IActionResult FindMovieByIdPagedSearch([FromQuery] long id, int pageSize, int page, int order = (int)MovieField.title, bool isAscending = true)
         {
             return new OkObjectResult(_business.FindMovieByIdPagedSearch(id, pageSize, page, (MovieField)order, isAscending));
@@ -190,6 +194,8 @@ namespace WebApi.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ApiExplorerSettings(GroupName = "v2")]
+
         public IActionResult FindMovieByNamePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.title, bool isAscending = true)
         {
             return new OkObjectResult(_business.FindMovieByNamePagedSearch(name, pageSize, page, (MovieField)order, isAscending));

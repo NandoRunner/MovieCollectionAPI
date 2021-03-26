@@ -1,0 +1,229 @@
+diff --git a/WebApi/Controllers/ActorsController.cs b/WebApi/Controllers/ActorsController.cs
+index 92fcb13..e3a93f5 100644
+--- a/WebApi/Controllers/ActorsController.cs
++++ b/WebApi/Controllers/ActorsController.cs
+@@ -9,7 +9,8 @@ using FAndradeTI.Util.Database.Model;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("1.0")]
++    [ApiVersion("2.0")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class ActorsController : Controller
+     {
+@@ -29,6 +30,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [MapToApiVersion("2.0")]
+         public IActionResult Get()
+         {
+             return new OkObjectResult(_business.FindAll());
+@@ -136,6 +138,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
+         public IActionResult FindMovieCountPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.count, bool isAscending = true)
+         {
+             return new OkObjectResult(_business.FindMovieCountPagedSearch(name, pageSize, page, (MovieField)order, isAscending));
+@@ -163,6 +166,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
+         public IActionResult FindMovieByIdPagedSearch([FromQuery] long id, int pageSize, int page, int order = (int)MovieField.title, bool isAscending = true)
+         {
+             return new OkObjectResult(_business.FindMovieByIdPagedSearch(id, pageSize, page, (MovieField)order, isAscending));
+@@ -190,6 +194,8 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
++
+         public IActionResult FindMovieByNamePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.title, bool isAscending = true)
+         {
+             return new OkObjectResult(_business.FindMovieByNamePagedSearch(name, pageSize, page, (MovieField)order, isAscending));
+diff --git a/WebApi/Controllers/DirectorsController.cs b/WebApi/Controllers/DirectorsController.cs
+index c60faf8..c84f5f7 100644
+--- a/WebApi/Controllers/DirectorsController.cs
++++ b/WebApi/Controllers/DirectorsController.cs
+@@ -9,7 +9,8 @@ using FAndradeTI.Util.Database.Model;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("1.0")]
++    [ApiVersion("2.0")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class DirectorsController : Controller
+     {
+diff --git a/WebApi/Controllers/FileController.cs b/WebApi/Controllers/FileController.cs
+index 7486303..04a96ae 100644
+--- a/WebApi/Controllers/FileController.cs
++++ b/WebApi/Controllers/FileController.cs
+@@ -7,7 +7,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("2.0")]
++    [ApiExplorerSettings(GroupName = "v2")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class FileController : Controller
+     {
+@@ -23,6 +24,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [MapToApiVersion("2")]
+         //[Authorize("Bearer")]
+         public IActionResult GetPDFFile()
+         {
+diff --git a/WebApi/Controllers/GenresController.cs b/WebApi/Controllers/GenresController.cs
+index f0c320e..a8fb1ef 100644
+--- a/WebApi/Controllers/GenresController.cs
++++ b/WebApi/Controllers/GenresController.cs
+@@ -9,7 +9,8 @@ using FAndradeTI.Util.Database.Model;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("1.0")]
++    [ApiVersion("2.0")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class GenresController : Controller
+     {
+diff --git a/WebApi/Controllers/LoginController.cs b/WebApi/Controllers/LoginController.cs
+index c73b1cd..515bc86 100644
+--- a/WebApi/Controllers/LoginController.cs
++++ b/WebApi/Controllers/LoginController.cs
+@@ -5,7 +5,8 @@ using WebApi.Model;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("2.0")]
++    [ApiExplorerSettings(GroupName = "v2")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class LoginController : Controller
+     {
+diff --git a/WebApi/Controllers/MoviesController.cs b/WebApi/Controllers/MoviesController.cs
+index 7a61a75..071989e 100644
+--- a/WebApi/Controllers/MoviesController.cs
++++ b/WebApi/Controllers/MoviesController.cs
+@@ -8,7 +8,8 @@ using FAndradeTI.Util.Database.Model;
+ 
+ namespace WebApi.Controllers
+ {
+-    [ApiVersion("1")]
++    [ApiVersion("1.0")]
++    [ApiVersion("2.0")]
+     [Route("[controller]/v{version:apiVersion}")]
+     public class MoviesController : Controller
+     {
+@@ -108,6 +109,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
+         public IActionResult GetPagedSearch([FromQuery] string name, int pageSize, int page, bool isAscending = true)
+         {
+             return new OkObjectResult(_business.FindWithPagedSearch(name, pageSize, page, isAscending));
+@@ -118,6 +120,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
+         public IActionResult GetWatchedPagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.period, bool isAscending = true)
+         {
+             return new OkObjectResult(_business.FindWatchedPagedSearch(name, pageSize, page, (MovieField)order, isAscending));
+@@ -128,6 +131,7 @@ namespace WebApi.Controllers
+         [ProducesResponseType(204)]
+         [ProducesResponseType(400)]
+         [ProducesResponseType(401)]
++        [ApiExplorerSettings(GroupName = "v2")]
+         public IActionResult GetAvailablePagedSearch([FromQuery] string name, int pageSize, int page, int order = (int)MovieField.rating, bool isAscending = false)
+         {
+             return new OkObjectResult(_business.FindAvailablePagedSearch(name, pageSize, page, (MovieField)order, isAscending));
+diff --git a/WebApi/Startup.cs b/WebApi/Startup.cs
+index 173f3b3..e018239 100644
+--- a/WebApi/Startup.cs
++++ b/WebApi/Startup.cs
+@@ -2,6 +2,7 @@
+ using Microsoft.AspNetCore.Authorization;
+ using Microsoft.AspNetCore.Builder;
+ using Microsoft.AspNetCore.Hosting;
++using Microsoft.AspNetCore.Mvc;
+ using Microsoft.AspNetCore.Rewrite;
+ using Microsoft.EntityFrameworkCore;
+ using Microsoft.Extensions.Configuration;
+@@ -14,6 +15,7 @@ using Microsoft.Net.Http.Headers;
+ using Microsoft.OpenApi.Models;
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using System.Text;
+ using Tapioca.HATEOAS;
+ using WebApi.Business;
+@@ -124,18 +126,46 @@ namespace WebApi
+             services.AddSingleton(filterOptions);
+ 
+             //Versioning
+-            services.AddApiVersioning(option => option.ReportApiVersions = true);
++            services.AddApiVersioning(option =>
++            {
++                option.DefaultApiVersion = new ApiVersion(1, 0);
++                option.AssumeDefaultVersionWhenUnspecified = true;
++                option.ReportApiVersions = true;
++
++            }
++            );
+ 
+             //Add Swagger Service
+             services.AddSwaggerGen(c =>
+-           {
++            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+-                       Title = "Movie Collection",
+-                       Version = "v1"
++                       Title = "Movie Collection API",
++                       Version = "v1",
++                       Contact = new OpenApiContact()
++                       {
++                           Name = "Fernando Andrade",
++                           Email = "nando.az@gmail.com",
++                           Url = new Uri("http://github.com/NandoRunner/MovieCollectionAPI")
++                       }
+                    });
+-           });
++
++               c.SwaggerDoc("v2",
++                    new OpenApiInfo
++                    {
++                        Title = "Movie Collection API",
++                        Description = "Actor Pagged Search",
++                        Version = "v2",
++                        Contact = new OpenApiContact() { 
++                            Name = "Fernando Andrade", 
++                            Email = "nando.az@gmail.com", 
++                            Url = new Uri("http://github.com/NandoRunner/MovieCollectionAPI")
++                        }
++                    });
++
++               c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
++            });
+ 
+             //Dependency Injection
+             services.AddScoped<IActorBusiness, ActorBusinessImpl>();
+@@ -216,6 +246,7 @@ namespace WebApi
+                     c.SwaggerEndpoint("../swagger/v1/swagger.json", $"Movie Collection API v1 (BETA {packageVersion})");
+ #else
+                 c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Movie Collection API v1 ({packageVersion})");
++                c.SwaggerEndpoint("/swagger/v2/swagger.json", $"Movie Collection API v2 ({packageVersion})");
+ #endif
+ 
+                 //}

@@ -5,7 +5,8 @@ using WebApi.Model;
 
 namespace WebApi.Controllers
 {
-    [ApiVersion("1")]
+    [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "v2")]
     [Route("[controller]/v{version:apiVersion}")]
     public class LoginController : Controller
     {

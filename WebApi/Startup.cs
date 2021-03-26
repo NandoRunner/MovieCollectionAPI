@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Tapioca.HATEOAS;
 using WebApi.Business;
@@ -124,18 +126,46 @@ namespace WebApi
             services.AddSingleton(filterOptions);
 
             //Versioning
-            services.AddApiVersioning(option => option.ReportApiVersions = true);
+            services.AddApiVersioning(option =>
+            {
+                option.DefaultApiVersion = new ApiVersion(1, 0);
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.ReportApiVersions = true;
+
+            }
+            );
 
             //Add Swagger Service
             services.AddSwaggerGen(c =>
-           {
+            {
                c.SwaggerDoc("v1",
                    new OpenApiInfo
                    {
-                       Title = "Movie Collection",
-                       Version = "v1"
+                       Title = "Movie Collection API",
+                       Version = "v1",
+                       Contact = new OpenApiContact()
+                       {
+                           Name = "Fernando Andrade",
+                           Email = "nando.az@gmail.com",
+                           Url = new Uri("http://github.com/NandoRunner/MovieCollectionAPI")
+                       }
                    });
-           });
+
+               c.SwaggerDoc("v2",
+                    new OpenApiInfo
+                    {
+                        Title = "Movie Collection API",
+                        Description = "Actor Pagged Search",
+                        Version = "v2",
+                        Contact = new OpenApiContact() { 
+                            Name = "Fernando Andrade", 
+                            Email = "nando.az@gmail.com", 
+                            Url = new Uri("http://github.com/NandoRunner/MovieCollectionAPI")
+                        }
+                    });
+
+               c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
 
             //Dependency Injection
             services.AddScoped<IActorBusiness, ActorBusinessImpl>();
@@ -216,6 +246,7 @@ namespace WebApi
                     c.SwaggerEndpoint("../swagger/v1/swagger.json", $"Movie Collection API v1 (BETA {packageVersion})");
 #else
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", $"Movie Collection API v1 ({packageVersion})");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", $"Movie Collection API v2 ({packageVersion})");
 #endif
 
                 //}
